@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Aktiviti Asrama</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --secondary: #0891b2;
+            --accent: #f59e0b;
+            --success: #059669;
+            --danger: #dc2626;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-placeholder {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+            padding: 5px;
+        }
+
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header-title h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header-title p {
+            font-size: 0.9rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .tabs {
+            display: flex;
+            background: var(--bg-main);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tab:hover {
+            background: rgba(30, 64, 175, 0.05);
+            color: var(--primary);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            background: white;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: scaleX(0);
+            }
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .dashboard-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-btn:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .report-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            display: grid;
+            grid-template-columns: 200px 1fr 250px;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .report-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .report-date {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .date-day {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .date-details {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .report-content h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .report-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .report-images {
+            display: block;
+        }
+
+        .report-image {
+            width: 100%;
+            height: 180px;
+            background: var(--bg-main);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .report-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: 'IBM Plex Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .image-upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .single-upload-container {
+            max-width: 500px;
+        }
+
+        .upload-box-large {
+            aspect-ratio: 16/9;
+            border: 2px dashed var(--border);
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-main);
+            padding: 2rem;
+        }
+
+        .upload-box-large:hover {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .upload-box-large svg {
+            width: 60px;
+            height: 60px;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .upload-box-large span {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .upload-box-large small {
+            display: block;
+        }
+
+        .upload-box {
+            aspect-ratio: 1;
+            border: 2px dashed var(--border);
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-main);
+        }
+
+        .upload-box:hover {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .upload-box svg {
+            width: 40px;
+            height: 40px;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-box span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--success) 0%, #047857 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                text-align: center;
+            }
+
+            .header-title h1 {
+                font-size: 1.2rem;
+            }
+
+            .report-card {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .tab {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .dashboard-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-buttons {
+                justify-content: center;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(30, 64, 175, 0.1);
+            color: var(--primary);
+            margin-top: 0.5rem;
+        }
+
+        /* Print Preview Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            background: var(--bg-main);
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-print {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-print:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-cancel {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Print Template */
+        .print-template {
+            background: white;
+            padding: 2rem;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        .print-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .print-logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        .print-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .print-title {
+            flex: 1;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .print-title h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .print-title p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .print-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .print-section-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .print-info-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .print-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .print-value {
+            color: var(--text-primary);
+        }
+
+        .print-image-container {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .print-image-container img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .print-footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .clickable-row {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clickable-row:hover {
+            background: var(--bg-main);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-template, .print-template * {
+                visibility: visible;
+            }
+            .print-template {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .modal-header, .modal-footer {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-logo">
+                <div class="logo-placeholder">
+                    <img src="https://i.postimg.cc/G23tcFnW/Logo-SK-Adin.png" alt="Logo SK Adin">
+                </div>
+            </div>
+            <div class="header-title">
+                <h1>LAPORAN AKTIVITI ASRAMA</h1>
+                <p>SEKOLAH KEBANGSAAN ADIN, SARIKEI (YBB6102)</p>
+            </div>
+            <div class="logo-placeholder">
+                <img src="https://i.postimg.cc/Njd1dGKk/Ts25-Program-Transformasi-Sekolah-2025-Logo-Vector-svg.png" alt="TS25 Logo">
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('dashboard')">
+                📊 Dashboard
+            </button>
+            <button class="tab" onclick="switchTab('laporan')">
+                ✏️ Laporan Baru
+            </button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="dashboard-controls">
+                <div class="page-info">
+                    Menunjukkan <strong>1-5</strong> daripada <strong>23</strong> laporan
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" disabled>
+                        ← Sebelum
+                    </button>
+                    <button class="nav-btn">
+                        Seterusnya →
+                    </button>
+                </div>
+            </div>
+
+            <div class="reports-list">
+                <!-- Report 1 -->
+                <div class="report-card">
+                    <div class="report-date">
+                        <div class="date-day">2.02.2025</div>
+                        <div class="date-details">Selasa</div>
+                        <div class="date-details">5.00 - 5.15 pagi</div>
+                        <span class="badge">Terkini</span>
+                    </div>
+                    <div class="report-content">
+                        <h3>Aktiviti asrama pagi ini:</h3>
+                        <p>Senaman pagi/kecergasan. Semua pelajar hadir dan mengambil bahagian dengan aktif. Keadaan cuaca cerah.</p>
+                    </div>
+                    <div class="report-images">
+                        <div class="report-image">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop" alt="Aktiviti">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report 2 -->
+                <div class="report-card">
+                    <div class="report-date">
+                        <div class="date-day">1.02.2025</div>
+                        <div class="date-details">Isnin</div>
+                        <div class="date-details">9.30 - 10.00 malam</div>
+                    </div>
+                    <div class="report-content">
+                        <h3>Pemeriksaan asrama malam:</h3>
+                        <p>Rondaan malam dijalankan. Semua pelajar berada di dorm masing-masing. Lampu telah dimatikan tepat pada masa. Tiada insiden dilaporkan.</p>
+                    </div>
+                    <div class="report-images">
+                        <div class="report-image">
+                            <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&h=300&fit=crop" alt="Pemeriksaan">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report 3 -->
+                <div class="report-card">
+                    <div class="report-date">
+                        <div class="date-day">31.01.2025</div>
+                        <div class="date-details">Ahad</div>
+                        <div class="date-details">7.00 - 8.00 pagi</div>
+                    </div>
+                    <div class="report-content">
+                        <h3>Aktiviti kebersihan:</h3>
+                        <p>Program gotong-royong mingguan. Pelajar membersihkan kawasan asrama dan dewan makan. Kebersihan berada pada tahap memuaskan.</p>
+                    </div>
+                    <div class="report-images">
+                        <div class="report-image">
+                            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop" alt="Kebersihan">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report 4 -->
+                <div class="report-card">
+                    <div class="report-date">
+                        <div class="date-day">30.01.2025</div>
+                        <div class="date-details">Sabtu</div>
+                        <div class="date-details">4.00 - 5.00 petang</div>
+                    </div>
+                    <div class="report-content">
+                        <h3>Aktiviti riadah:</h3>
+                        <p>Sesi permainan dan sukan petang. Pelajar bermain bola sepak, badminton dan bola jaring. Aktiviti berjalan dengan lancar dan teratur.</p>
+                    </div>
+                    <div class="report-images">
+                        <div class="report-image">
+                            <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=400&h=300&fit=crop" alt="Sukan">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report 5 -->
+                <div class="report-card">
+                    <div class="report-date">
+                        <div class="date-day">29.01.2025</div>
+                        <div class="date-details">Jumaat</div>
+                        <div class="date-details">8.00 - 9.00 malam</div>
+                    </div>
+                    <div class="report-content">
+                        <h3>Waktu belajar malam:</h3>
+                        <p>Sesi pembelajaran kendiri di dewan belajar. Semua pelajar fokus dengan tugasan masing-masing. Suasana tenang dan kondusif untuk belajar.</p>
+                    </div>
+                    <div class="report-images">
+                        <div class="report-image">
+                            <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=300&fit=crop" alt="Belajar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Laporan Tab -->
+        <div id="laporan" class="tab-content">
+            <form id="reportForm">
+                <div class="form-group">
+                    <label for="tarikh">Tarikh</label>
+                    <input type="date" id="tarikh" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="masa">Masa</label>
+                    <input type="text" id="masa" placeholder="Contoh: 0500-0515 atau 1600-1700" required>
+                    <small style="color: var(--text-secondary); margin-top: 0.5rem; display: block;">
+                        Format: 0500-0515 (akan jadi 5.00 - 5.15 pagi) atau 1600-1700 (akan jadi 4.00 - 5.00 petang)
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="butiran">Butiran Aktiviti</label>
+                    <textarea id="butiran" placeholder="Tuliskan butiran aktiviti asrama di sini..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Gambar</label>
+                    <div class="single-upload-container">
+                        <div class="upload-box-large" id="uploadBox" onclick="document.getElementById('fileInput').click()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>Klik untuk pilih gambar</span>
+                            <small style="color: var(--text-secondary); margin-top: 0.5rem;">Format: JPG, PNG, JPEG (Max 5MB)</small>
+                            <input type="file" id="fileInput" accept="image/jpeg,image/png,image/jpg" style="display: none;" onchange="previewImage(this)">
+                        </div>
+                        <div id="imagePreview" style="display: none; margin-top: 1rem;">
+                            <img id="previewImg" style="max-width: 100%; border-radius: 0.5rem; border: 2px solid var(--border);">
+                            <button type="button" onclick="removeImage()" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: var(--danger); color: white; border: none; border-radius: 0.375rem; cursor: pointer;">
+                                🗑️ Buang Gambar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="btn-submit">
+                        💾 Simpan Laporan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Print Preview Modal -->
+    <div id="printModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👁️ Preview Cetak Laporan</h2>
+                <button class="modal-close" onclick="closePrintModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="print-template" id="printContent">
+                    <!-- Content will be dynamically inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closePrintModal()">Batal</button>
+                <button class="btn-print" onclick="printReport()">
+                    🖨️ Cetak
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // GOOGLE SHEETS CONFIGURATION
+        // ============================================
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzapROky7x_XaMlZLG73OvPP1SbayNsSHvg2NkzGDl0Caue2cFAWr71bdx-KFSokEkJYA/exec';
+        
+        // Google Drive Folder ID untuk simpan gambar
+        const DRIVE_FOLDER_ID = '1flKrpPwy1D1t48CnJKanL5U2JC5hYqKn';
+        
+        // ============================================
+        // TIME FORMATTING FUNCTIONS
+        // ============================================
+        
+        /**
+         * Convert time format from 0500-0515 to 5.00 - 5.15 pagi/petang
+         */
+        function formatTime(timeInput) {
+            // Remove all spaces and convert to uppercase
+            timeInput = timeInput.replace(/\s+/g, '').toUpperCase();
+            
+            // Handle different separators: -, –, —, atau tiada separator
+            let match = timeInput.match(/(\d{4})[-–—]?(\d{4})?/);
+            
+            if (!match) {
+                throw new Error('Format masa tidak sah. Guna format: 0500-0515 atau 1600-1700');
+            }
+            
+            const startTime = match[1];
+            const endTime = match[2] || '';
+            
+            // Parse start time
+            const startHour = parseInt(startTime.substring(0, 2));
+            const startMin = startTime.substring(2, 4);
+            
+            if (startHour < 0 || startHour > 23 || parseInt(startMin) < 0 || parseInt(startMin) > 59) {
+                throw new Error('Masa tidak sah. Pastikan jam (00-23) dan minit (00-59) betul.');
+            }
+            
+            // Determine period (pagi/petang/malam)
+            let period = '';
+            if (startHour >= 0 && startHour < 12) {
+                period = 'pagi';
+            } else if (startHour >= 12 && startHour < 18) {
+                period = 'petang';
+            } else {
+                period = 'malam';
+            }
+            
+            // Format start time (convert 24h to 12h format for display)
+            let displayStartHour = startHour;
+            if (startHour === 0) {
+                displayStartHour = 12;
+            } else if (startHour > 12) {
+                displayStartHour = startHour - 12;
+            }
+            
+            let formattedTime = `${displayStartHour}.${startMin}`;
+            
+            // If end time exists, format it too
+            if (endTime) {
+                const endHour = parseInt(endTime.substring(0, 2));
+                const endMin = endTime.substring(2, 4);
+                
+                if (endHour < 0 || endHour > 23 || parseInt(endMin) < 0 || parseInt(endMin) > 59) {
+                    throw new Error('Masa tamat tidak sah. Pastikan jam (00-23) dan minit (00-59) betul.');
+                }
+                
+                let displayEndHour = endHour;
+                if (endHour === 0) {
+                    displayEndHour = 12;
+                } else if (endHour > 12) {
+                    displayEndHour = endHour - 12;
+                }
+                
+                formattedTime += ` - ${displayEndHour}.${endMin}`;
+            }
+            
+            formattedTime += ` ${period}`;
+            
+            return formattedTime;
+        }
+        
+        /**
+         * Create unique ID from date and time
+         */
+        function createUniqueId(dateStr, timeStr) {
+            // Parse date (YYYY-MM-DD)
+            const dateParts = dateStr.split('-');
+            const year = dateParts[0];
+            const month = dateParts[1];
+            const day = dateParts[2];
+            
+            // Parse time (get first 4 digits)
+            const timeMatch = timeStr.replace(/\s+/g, '').match(/(\d{4})/);
+            const time = timeMatch ? timeMatch[1] : '0000';
+            
+            return `${year}${month}${day}_${time}`;
+        }
+        
+        // ============================================
+        // IMAGE PREVIEW FUNCTIONS
+        // ============================================
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                // Check file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Saiz gambar terlalu besar! Maksimum 5MB.');
+                    input.value = '';
+                    return;
+                }
+                
+                // Check file type
+                if (!file.type.match('image/(jpeg|jpg|png)')) {
+                    alert('Format gambar tidak sah! Gunakan JPG, JPEG atau PNG sahaja.');
+                    input.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('uploadBox').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function removeImage() {
+            document.getElementById('fileInput').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('uploadBox').style.display = 'flex';
+        }
+        
+        // ============================================
+        // PRINT PREVIEW FUNCTIONS
+        // ============================================
+        
+        function openPrintModal(report) {
+            const modal = document.getElementById('printModal');
+            const printContent = document.getElementById('printContent');
+            
+            // Fix image URL if it's from Google Drive
+            let imageUrl = report.gambar || '';
+            if (imageUrl && imageUrl.includes('drive.google.com')) {
+                let fileId = '';
+                if (imageUrl.includes('id=')) {
+                    fileId = imageUrl.split('id=')[1].split('&')[0];
+                } else if (imageUrl.includes('/file/d/')) {
+                    fileId = imageUrl.split('/file/d/')[1].split('/')[0];
+                }
+                if (fileId) {
+                    imageUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
+                }
+            }
+            
+            // Generate print template
+            printContent.innerHTML = `
+                <div class="print-header">
+                    <div class="print-logo">
+                        <img src="https://i.postimg.cc/G23tcFnW/Logo-SK-Adin.png" alt="Logo SK Adin">
+                    </div>
+                    <div class="print-title">
+                        <h1>LAPORAN AKTIVITI ASRAMA</h1>
+                        <p>Sekolah Kebangsaan Adin, Sarikei (YBB6102)</p>
+                    </div>
+                    <div class="print-logo">
+                        <img src="https://i.postimg.cc/Njd1dGKk/Ts25-Program-Transformasi-Sekolah-2025-Logo-Vector-svg.png" alt="TS25 Logo">
+                    </div>
+                </div>
+
+                <div class="print-section">
+                    <div class="print-section-title">Maklumat Laporan</div>
+                    <div class="print-info-grid">
+                        <div class="print-label">Tarikh:</div>
+                        <div class="print-value">${report.tarikh}</div>
+                        
+                        <div class="print-label">Hari:</div>
+                        <div class="print-value">${report.hari}</div>
+                        
+                        <div class="print-label">Masa:</div>
+                        <div class="print-value">${report.masa}</div>
+                    </div>
+                </div>
+
+                <div class="print-section">
+                    <div class="print-section-title">Butiran Aktiviti</div>
+                    <div class="print-value" style="line-height: 1.8;">
+                        ${report.butiran}
+                    </div>
+                </div>
+
+                ${imageUrl ? `
+                    <div class="print-section">
+                        <div class="print-section-title">Gambar Aktiviti</div>
+                        <div class="print-image-container">
+                            <img src="${imageUrl}" alt="Gambar Aktiviti" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                ` : ''}
+
+                <div class="print-footer">
+                    Ini adalah janaan digital. Tandatangan tidak diperlukan.
+                </div>
+            `;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closePrintModal() {
+            const modal = document.getElementById('printModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function printReport() {
+            window.print();
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('printModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePrintModal();
+            }
+        });
+        
+        // ============================================
+        // TAB SWITCHING
+        // ============================================
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Load data when switching to dashboard
+            if (tabName === 'dashboard') {
+                loadReportsFromSheet();
+            }
+        }
+
+        // ============================================
+        // GOOGLE SHEETS FUNCTIONS
+        // ============================================
+        
+        // Load reports from Google Sheets
+        async function loadReportsFromSheet() {
+            try {
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getReports&page=${currentPage}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayReports(data.reports);
+                    updatePaginationInfo(data.totalReports);
+                }
+            } catch (error) {
+                console.error('Error loading reports:', error);
+                // Silently fail for now, will show mock data
+            }
+        }
+
+        // Display reports in dashboard
+        function displayReports(reports) {
+            const reportsList = document.querySelector('.reports-list');
+            reportsList.innerHTML = '';
+            
+            reports.forEach((report, index) => {
+                const reportCard = createReportCard(report, index === 0);
+                reportsList.appendChild(reportCard);
+            });
+        }
+
+        // Create report card HTML element
+        function createReportCard(report, isLatest) {
+            const card = document.createElement('div');
+            card.className = 'report-card clickable-row';
+            
+            // Fix Google Drive URL for direct image display
+            let imageUrl = report.gambar || '';
+            if (imageUrl && imageUrl.includes('drive.google.com')) {
+                // Extract file ID from various Google Drive URL formats
+                let fileId = '';
+                
+                // Format 1: https://drive.google.com/uc?export=view&id=FILE_ID
+                if (imageUrl.includes('id=')) {
+                    fileId = imageUrl.split('id=')[1].split('&')[0];
+                }
+                // Format 2: https://drive.google.com/file/d/FILE_ID/
+                else if (imageUrl.includes('/file/d/')) {
+                    fileId = imageUrl.split('/file/d/')[1].split('/')[0];
+                }
+                
+                // Use thumbnail format for better loading
+                if (fileId) {
+                    imageUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
+                }
+            }
+            
+            // Fallback to placeholder if no image
+            if (!imageUrl) {
+                imageUrl = 'https://via.placeholder.com/400x300?text=Tiada+Gambar';
+            }
+            
+            card.innerHTML = `
+                <div class="report-date">
+                    <div class="date-day">${report.tarikh}</div>
+                    <div class="date-details">${report.hari}</div>
+                    <div class="date-details">${report.masa}</div>
+                    ${isLatest ? '<span class="badge">Terkini</span>' : ''}
+                </div>
+                <div class="report-content">
+                    <h3>Aktiviti asrama:</h3>
+                    <p>${report.butiran}</p>
+                </div>
+                <div class="report-images">
+                    <div class="report-image">
+                        <img src="${imageUrl}" alt="Aktiviti" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=Gambar+Tidak+Tersedia';">
+                    </div>
+                </div>
+            `;
+            
+            // Add click event to open print preview
+            card.addEventListener('click', function() {
+                openPrintModal(report);
+            });
+            
+            return card;
+        }
+
+        // Save report to Google Sheets
+        async function saveReportToSheet(reportData) {
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'saveReport',
+                        data: reportData
+                    })
+                });
+                
+                return { success: true };
+            } catch (error) {
+                console.error('Error saving report:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Convert image to base64
+        function convertImageToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ============================================
+        // FORM SUBMISSION
+        // ============================================
+        document.getElementById('reportForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.btn-submit');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '⏳ Menyimpan...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Get form data
+                const dateInput = document.getElementById('tarikh').value; // YYYY-MM-DD
+                const timeInput = document.getElementById('masa').value;
+                
+                // Format time
+                let formattedTime;
+                try {
+                    formattedTime = formatTime(timeInput);
+                } catch (error) {
+                    throw new Error(error.message);
+                }
+                
+                // Parse date
+                const date = new Date(dateInput);
+                
+                // Format date as '2.02.2025' with apostrophe
+                const tarikh = `'${date.getDate()}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
+                
+                // Get day name in Malay
+                const days = ['Ahad', 'Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu'];
+                const hari = days[date.getDay()];
+                
+                // Create UniqueID from date and time
+                const uniqueId = createUniqueId(dateInput, timeInput);
+                
+                const butiran = document.getElementById('butiran').value;
+                
+                // Get image file and convert to base64
+                const fileInput = document.getElementById('fileInput');
+                let imageBase64 = '';
+                
+                if (fileInput.files.length > 0) {
+                    imageBase64 = await convertImageToBase64(fileInput.files[0]);
+                }
+                
+                // Prepare report data
+                const reportData = {
+                    uniqueId: uniqueId,
+                    tarikh: tarikh,
+                    hari: hari,
+                    masa: formattedTime,
+                    butiran: butiran,
+                    gambar: imageBase64,
+                    folderId: DRIVE_FOLDER_ID,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Save to Google Sheets
+                const result = await saveReportToSheet(reportData);
+                
+                if (result.success) {
+                    alert('✅ Laporan berjaya disimpan!');
+                    this.reset();
+                    removeImage();
+                    
+                    // Switch to dashboard and reload
+                    document.querySelector('.tab:first-child').click();
+                    setTimeout(() => loadReportsFromSheet(), 500);
+                } else {
+                    throw new Error(result.error || 'Gagal menyimpan laporan');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Ralat: ' + error.message);
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // ============================================
+        // PAGINATION
+        // ============================================
+        let currentPage = 1;
+        let totalReports = 23;
+
+        document.querySelectorAll('.nav-btn').forEach((btn, index) => {
+            btn.addEventListener('click', function() {
+                if (index === 0) { // Previous button
+                    if (currentPage > 1) {
+                        currentPage--;
+                        loadReportsFromSheet();
+                    }
+                } else { // Next button
+                    currentPage++;
+                    loadReportsFromSheet();
+                }
+            });
+        });
+
+        function updatePaginationInfo(total) {
+            totalReports = total;
+            const start = (currentPage - 1) * 5 + 1;
+            const end = Math.min(currentPage * 5, totalReports);
+            const totalPages = Math.ceil(totalReports / 5);
+            
+            document.querySelector('.page-info').innerHTML = `Menunjukkan <strong>${start}-${end}</strong> daripada <strong>${totalReports}</strong> laporan`;
+            
+            const prevBtn = document.querySelectorAll('.nav-btn')[0];
+            const nextBtn = document.querySelectorAll('.nav-btn')[1];
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        // Load reports on page load
+        window.addEventListener('load', function() {
+            loadReportsFromSheet();
+            
+            console.log('Sistem Laporan Aktiviti Asrama dimulakan.');
+        });
+    </script>
+</body>
+</html>
