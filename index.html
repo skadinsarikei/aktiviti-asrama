@@ -604,8 +604,14 @@
         /* Print Template */
         .print-template {
             background: white;
-            padding: 2rem;
+            padding: 1.5rem;
             font-family: 'IBM Plex Sans', sans-serif;
+        }
+        
+        @media print {
+            .print-template {
+                padding: 0 !important;
+            }
         }
 
         .print-header {
@@ -708,20 +714,73 @@
         }
 
         @media print {
-            body * {
-                visibility: hidden;
+            @page {
+                size: A4 portrait;
+                margin: 1.5cm;
             }
-            .print-template, .print-template * {
-                visibility: visible;
-            }
-            .print-template {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-            .modal-header, .modal-footer, .modal {
+            
+            /* Hide everything first */
+            body > *:not(#printModal) {
                 display: none !important;
+            }
+            
+            /* Show only the modal */
+            #printModal {
+                display: block !important;
+                position: static !important;
+                background: white !important;
+            }
+            
+            /* Hide modal chrome (header, footer, overlay) */
+            .modal-header,
+            .modal-footer,
+            .modal-close {
+                display: none !important;
+            }
+            
+            /* Show modal content */
+            .modal-content {
+                width: 100% !important;
+                max-width: 100% !important;
+                max-height: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            .modal-body {
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+            
+            /* Ensure print template is visible */
+            .print-template {
+                display: block !important;
+                visibility: visible !important;
+                position: static !important;
+                width: 100% !important;
+                padding: 1cm !important;
+            }
+            
+            .print-template * {
+                visibility: visible !important;
+            }
+            
+            /* Prevent page breaks in important sections */
+            .print-section {
+                page-break-inside: avoid;
+            }
+            
+            .print-header {
+                page-break-after: avoid;
+            }
+            
+            /* Ensure images print properly */
+            .print-image-container img {
+                max-width: 100% !important;
+                height: auto !important;
+                page-break-inside: avoid;
             }
         }
 
@@ -1134,10 +1193,21 @@
         }
         
         function printReport() {
-            // Use a timeout to ensure the modal content is fully rendered
+            // Ensure modal is fully visible and rendered
+            const modal = document.getElementById('printModal');
+            const printContent = document.getElementById('printContent');
+            
+            // Check if content exists
+            if (!printContent.innerHTML.trim()) {
+                alert('Ralat: Tiada kandungan untuk dicetak.');
+                return;
+            }
+            
+            // Small delay to ensure images are loaded
             setTimeout(() => {
-            window.print();
-            }, 100);
+                // Trigger print dialog
+                window.print();
+            }, 250);
         }
         
         // Close modal when clicking outside
