@@ -720,9 +720,55 @@
                 top: 0;
                 width: 100%;
             }
-            .modal-header, .modal-footer {
-                display: none;
+            .modal-header, .modal-footer, .modal {
+                display: none !important;
             }
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .loading-subtext {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
     </style>
 </head>
@@ -768,97 +814,8 @@
                 </div>
             </div>
 
-            <div class="reports-list">
-                <!-- Report 1 -->
-                <div class="report-card">
-                    <div class="report-date">
-                        <div class="date-day">2.02.2025</div>
-                        <div class="date-details">Selasa</div>
-                        <div class="date-details">5.00 - 5.15 pagi</div>
-                        <span class="badge">Terkini</span>
-                    </div>
-                    <div class="report-content">
-                        <h3>Aktiviti asrama pagi ini:</h3>
-                        <p>Senaman pagi/kecergasan. Semua pelajar hadir dan mengambil bahagian dengan aktif. Keadaan cuaca cerah.</p>
-                    </div>
-                    <div class="report-images">
-                        <div class="report-image">
-                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop" alt="Aktiviti">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Report 2 -->
-                <div class="report-card">
-                    <div class="report-date">
-                        <div class="date-day">1.02.2025</div>
-                        <div class="date-details">Isnin</div>
-                        <div class="date-details">9.30 - 10.00 malam</div>
-                    </div>
-                    <div class="report-content">
-                        <h3>Pemeriksaan asrama malam:</h3>
-                        <p>Rondaan malam dijalankan. Semua pelajar berada di dorm masing-masing. Lampu telah dimatikan tepat pada masa. Tiada insiden dilaporkan.</p>
-                    </div>
-                    <div class="report-images">
-                        <div class="report-image">
-                            <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&h=300&fit=crop" alt="Pemeriksaan">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Report 3 -->
-                <div class="report-card">
-                    <div class="report-date">
-                        <div class="date-day">31.01.2025</div>
-                        <div class="date-details">Ahad</div>
-                        <div class="date-details">7.00 - 8.00 pagi</div>
-                    </div>
-                    <div class="report-content">
-                        <h3>Aktiviti kebersihan:</h3>
-                        <p>Program gotong-royong mingguan. Pelajar membersihkan kawasan asrama dan dewan makan. Kebersihan berada pada tahap memuaskan.</p>
-                    </div>
-                    <div class="report-images">
-                        <div class="report-image">
-                            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop" alt="Kebersihan">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Report 4 -->
-                <div class="report-card">
-                    <div class="report-date">
-                        <div class="date-day">30.01.2025</div>
-                        <div class="date-details">Sabtu</div>
-                        <div class="date-details">4.00 - 5.00 petang</div>
-                    </div>
-                    <div class="report-content">
-                        <h3>Aktiviti riadah:</h3>
-                        <p>Sesi permainan dan sukan petang. Pelajar bermain bola sepak, badminton dan bola jaring. Aktiviti berjalan dengan lancar dan teratur.</p>
-                    </div>
-                    <div class="report-images">
-                        <div class="report-image">
-                            <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=400&h=300&fit=crop" alt="Sukan">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Report 5 -->
-                <div class="report-card">
-                    <div class="report-date">
-                        <div class="date-day">29.01.2025</div>
-                        <div class="date-details">Jumaat</div>
-                        <div class="date-details">8.00 - 9.00 malam</div>
-                    </div>
-                    <div class="report-content">
-                        <h3>Waktu belajar malam:</h3>
-                        <p>Sesi pembelajaran kendiri di dewan belajar. Semua pelajar fokus dengan tugasan masing-masing. Suasana tenang dan kondusif untuk belajar.</p>
-                    </div>
-                    <div class="report-images">
-                        <div class="report-image">
-                            <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=300&fit=crop" alt="Belajar">
-                        </div>
-                    </div>
-                </div>
+            <div class="reports-list" style="display: none;">
+                <!-- Reports will be loaded here dynamically -->
             </div>
         </div>
 
@@ -910,6 +867,13 @@
                 </div>
             </form>
         </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Sedang memuat data...</div>
+        <div class="loading-subtext">Sila tunggu sebentar</div>
     </div>
 
     <!-- Print Preview Modal -->
@@ -1070,6 +1034,24 @@
         }
         
         // ============================================
+        // LOADING OVERLAY FUNCTIONS
+        // ============================================
+        
+        function showLoading(message = 'Sedang memuat data...', subtext = 'Sila tunggu sebentar') {
+            const overlay = document.getElementById('loadingOverlay');
+            const textElement = overlay.querySelector('.loading-text');
+            const subtextElement = overlay.querySelector('.loading-subtext');
+            
+            textElement.textContent = message;
+            subtextElement.textContent = subtext;
+            overlay.classList.add('active');
+        }
+        
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.remove('active');
+        }
+        
         // PRINT PREVIEW FUNCTIONS
         // ============================================
         
@@ -1152,7 +1134,10 @@
         }
         
         function printReport() {
+            // Use a timeout to ensure the modal content is fully rendered
+            setTimeout(() => {
             window.print();
+            }, 100);
         }
         
         // Close modal when clicking outside
@@ -1161,6 +1146,17 @@
                 closePrintModal();
             }
         });
+        
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('printModal');
+                if (modal.classList.contains('active')) {
+                    closePrintModal();
+                }
+            }
+        });
+        
         
         // ============================================
         // TAB SWITCHING
@@ -1189,16 +1185,20 @@
         
         // Load reports from Google Sheets
         async function loadReportsFromSheet() {
+            showLoading();
             try {
                 const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getReports&page=${currentPage}`);
                 const data = await response.json();
                 
                 if (data.success) {
+                    hideLoading();
                     displayReports(data.reports);
+                    document.querySelector('.reports-list').style.display = 'block';
                     updatePaginationInfo(data.totalReports);
                 }
             } catch (error) {
                 console.error('Error loading reports:', error);
+                hideLoading();
                 // Silently fail for now, will show mock data
             }
         }
@@ -1312,6 +1312,7 @@
             const submitBtn = this.querySelector('.btn-submit');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '⏳ Menyimpan...';
+                showLoading('Menyimpan laporan...', 'Mohon tunggu, data sedang diproses');
             submitBtn.disabled = true;
             
             try {
@@ -1381,6 +1382,7 @@
                 console.error('Error:', error);
                 alert('❌ Ralat: ' + error.message);
             } finally {
+                hideLoading();
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }
