@@ -848,6 +848,458 @@
             .print-header { page-break-after: avoid; }
             .print-image-container img { max-width: 100% !important; height: auto !important; page-break-inside: avoid; }
         }
+
+        /* ============================================
+           GALERI TAB
+        ============================================ */
+        .galeri-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .galeri-count-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .galeri-count-label strong {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .galeri-search-wrap {
+            position: relative;
+            width: 280px;
+        }
+
+        .galeri-search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        #galeriSearch {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.4rem;
+            border: 2px solid var(--border);
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-family: 'IBM Plex Sans', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--bg-main);
+        }
+
+        #galeriSearch:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        /* Masonry-style CSS column grid */
+        .galeri-grid {
+            columns: 4 200px;
+            column-gap: 1rem;
+        }
+
+        .galeri-tile {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+            background: var(--bg-main);
+            animation: tileIn 0.4s ease both;
+        }
+
+        @keyframes tileIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1);    }
+        }
+
+        .galeri-tile:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(30, 64, 175, 0.18);
+            z-index: 1;
+        }
+
+        .galeri-tile img {
+            width: 100%;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .galeri-tile:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Hover overlay */
+        .galeri-tile-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0) 55%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0.85rem;
+        }
+
+        .galeri-tile:hover .galeri-tile-overlay {
+            opacity: 1;
+        }
+
+        .galeri-tile-date {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #93c5fd;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.25rem;
+        }
+
+        .galeri-tile-caption {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.88);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Zoom icon badge */
+        .galeri-tile-zoom {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.92);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.7);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .galeri-tile-zoom svg {
+            width: 16px;
+            height: 16px;
+            color: var(--primary);
+        }
+
+        .galeri-tile:hover .galeri-tile-zoom {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Badge: "Terkini" ribbon */
+        .galeri-tile-new {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, var(--accent), #d97706);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            padding: 0.25rem 0.6rem 0.25rem 0.5rem;
+            border-radius: 0 0 0.5rem 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* No-image placeholder tile */
+        .galeri-tile-placeholder {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 140px;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .galeri-tile-placeholder svg {
+            width: 36px;
+            height: 36px;
+            opacity: 0.5;
+        }
+
+        .galeri-tile-placeholder span {
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        .galeri-empty {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .galeri-empty svg {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1rem;
+            opacity: 0.35;
+            display: block;
+        }
+
+        .galeri-empty p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* ============================================
+           LIGHTBOX
+        ============================================ */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(5, 10, 25, 0.96);
+            backdrop-filter: blur(6px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: lbFadeIn 0.3s ease;
+        }
+
+        .lightbox.lb-active { display: flex; }
+
+        @keyframes lbFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* Close button */
+        .lb-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.12);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.25s ease, transform 0.25s ease;
+            z-index: 10;
+        }
+
+        .lb-close:hover {
+            background: rgba(255,255,255,0.25);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .lb-close svg { width: 20px; height: 20px; }
+
+        /* Counter badge */
+        .lb-counter {
+            position: absolute;
+            top: 1.1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.65);
+            background: rgba(255,255,255,0.1);
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        /* Arrows */
+        .lb-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 52px;
+            height: 52px;
+            background: rgba(255,255,255,0.12);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.25s ease, transform 0.25s ease;
+            z-index: 10;
+        }
+
+        .lb-arrow svg { width: 22px; height: 22px; }
+
+        .lb-prev { left: 1.25rem; }
+        .lb-next { right: 1.25rem; }
+
+        .lb-prev:hover { background: rgba(255,255,255,0.25); transform: translateY(-50%) translateX(-3px); }
+        .lb-next:hover { background: rgba(255,255,255,0.25); transform: translateY(-50%) translateX(3px); }
+
+        .lb-arrow:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+
+        /* Image stage */
+        .lb-stage {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            flex: 1;
+            padding: 4.5rem 5rem 0.5rem;
+            min-height: 0;
+        }
+
+        .lb-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            animation: lbImgIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: block;
+        }
+
+        @keyframes lbImgIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        /* Spinner */
+        .lb-spinner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.15);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Caption */
+        .lb-caption {
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+            padding: 0.75rem 1rem 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .lb-caption-date {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #93c5fd;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+
+        .lb-caption-text {
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Thumbnail strip */
+        .lb-strip {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.75rem 1rem 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.3) transparent;
+            max-width: 100%;
+            flex-shrink: 0;
+        }
+
+        .lb-strip::-webkit-scrollbar { height: 4px; }
+        .lb-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 2px; }
+
+        .lb-thumb {
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+            border-radius: 0.375rem;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            opacity: 0.55;
+            transition: all 0.25s ease;
+        }
+
+        .lb-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lb-thumb:hover { opacity: 0.85; border-color: rgba(255,255,255,0.5); }
+        .lb-thumb.lb-thumb-active { border-color: #60a5fa; opacity: 1; }
+
+        /* No-image in lightbox */
+        .lb-no-image {
+            width: 220px;
+            height: 160px;
+            border-radius: 0.75rem;
+            background: rgba(255,255,255,0.07);
+            border: 2px dashed rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .lb-no-image svg { width: 48px; height: 48px; }
+        .lb-no-image span { font-size: 0.85rem; font-family: 'Poppins', sans-serif; }
+
+        @media (max-width: 768px) {
+            .galeri-grid { columns: 2 140px; }
+            .galeri-search-wrap { width: 100%; }
+            .lb-arrow { width: 40px; height: 40px; }
+            .lb-prev { left: 0.5rem; }
+            .lb-next { right: 0.5rem; }
+            .lb-stage { padding: 4rem 3.5rem 0.5rem; }
+            .lb-thumb { width: 48px; height: 48px; }
+        }
     </style>
 </head>
 <body>
@@ -868,10 +1320,13 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('dashboard')">
+            <button class="tab active" onclick="switchTab('dashboard', this)">
                 📊 Dashboard
             </button>
-            <button class="tab" onclick="switchTab('laporan')">
+            <button class="tab" onclick="switchTab('galeri', this)">
+                🖼️ Galeri
+            </button>
+            <button class="tab" onclick="switchTab('laporan', this)">
                 ✏️ Laporan Baru
             </button>
         </div>
@@ -889,6 +1344,87 @@
             </div>
 
             <div class="reports-list" style="display: none;"></div>
+        </div>
+
+        <!-- Galeri Tab -->
+        <div id="galeri" class="tab-content">
+
+            <!-- Galeri Controls Bar -->
+            <div class="galeri-controls">
+                <div class="galeri-info">
+                    <span class="galeri-count-label">Jumlah gambar: <strong id="galeriTotal">–</strong></span>
+                </div>
+                <div class="galeri-search-wrap">
+                    <svg class="galeri-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M21 21l-4.35-4.35m0 0A7 7 0 104.65 4.65a7 7 0 0011.99 11.99z"/>
+                    </svg>
+                    <input type="text" id="galeriSearch" placeholder="Cari mengikut tarikh atau butiran…"
+                           oninput="filterGaleri(this.value)">
+                </div>
+            </div>
+
+            <!-- Masonry-style Grid -->
+            <div class="galeri-grid" id="galeriGrid">
+                <!-- Tiles injected by JS -->
+            </div>
+
+            <!-- Empty state -->
+            <div class="galeri-empty" id="galeriEmpty" style="display:none;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <p>Tiada gambar dijumpai</p>
+            </div>
+
+            <!-- Load More -->
+            <div style="text-align:center; margin-top:2rem;" id="galeriLoadMore" style="display:none;">
+                <button class="nav-btn" id="galeriMoreBtn" onclick="galeriLoadMore()">
+                    Muat lebih banyak gambar ↓
+                </button>
+            </div>
+        </div>
+
+        <!-- LIGHTBOX OVERLAY -->
+        <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Pemapar gambar">
+            <button class="lb-close" onclick="closeLightbox()" title="Tutup (Esc)">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Counter badge -->
+            <div class="lb-counter" id="lbCounter">1 / 1</div>
+
+            <!-- Prev / Next -->
+            <button class="lb-arrow lb-prev" onclick="changeLightbox(-1)" title="Sebelum (←)">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+
+            <div class="lb-stage">
+                <div class="lb-spinner" id="lbSpinner"></div>
+                <img class="lb-img" id="lbImg" src="" alt="Gambar Aktiviti"
+                     onload="document.getElementById('lbSpinner').style.display='none'"
+                     onerror="lbImgError(this)">
+            </div>
+
+            <button class="lb-arrow lb-next" onclick="changeLightbox(1)" title="Seterusnya (→)">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+
+            <!-- Caption Strip -->
+            <div class="lb-caption" id="lbCaption">
+                <div class="lb-caption-date" id="lbDate"></div>
+                <div class="lb-caption-text" id="lbText"></div>
+            </div>
+
+            <!-- Thumbnail Strip -->
+            <div class="lb-strip" id="lbStrip"></div>
         </div>
 
         <!-- Laporan Tab -->
@@ -1295,13 +1831,347 @@
         // ============================================
         // TAB SWITCHING
         // ============================================
-        function switchTab(tabName) {
+        function switchTab(tabName, targetTab) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
+            (targetTab || event.target).classList.add('active');
+
             if (tabName === 'dashboard') loadReportsFromSheet();
+            if (tabName === 'galeri')    loadGaleri();
         }
+
+        // ============================================
+        // GALERI DATA STORE
+        // ============================================
+
+        // All report objects cached from any load (dashboard or galeri)
+        let galeriAllReports   = [];   // full list, newest first
+        let galeriFiltered     = [];   // after search filter
+        let galeriRenderedCount = 0;
+        const GALERI_PAGE_SIZE  = 20;
+        let galeriLoaded        = false; // have we fetched at least once?
+
+        /**
+         * Merge new reports into galeriAllReports without duplicates.
+         * Uses report.uniqueId as key; falls back to tarikh+masa combo.
+         */
+        function mergeIntoGaleri(reports) {
+            const existingIds = new Set(galeriAllReports.map(r => r.uniqueId || (r.tarikh + r.masa)));
+            for (const r of reports) {
+                const key = r.uniqueId || (r.tarikh + r.masa);
+                if (!existingIds.has(key)) {
+                    galeriAllReports.push(r);
+                    existingIds.add(key);
+                }
+            }
+            // Keep newest first (assume they come ordered already, but sort defensively)
+            // galeriAllReports stays in insertion order (newest first from API)
+        }
+
+        // ============================================
+        // GALERI — LOAD & RENDER
+        // ============================================
+
+        /**
+         * Fetch ALL pages from Google Sheets so the gallery is complete.
+         * We re-use the existing API endpoint page-by-page.
+         */
+        async function loadGaleri() {
+            if (galeriLoaded) {
+                renderGaleriGrid();
+                return;
+            }
+
+            showLoading('Memuatkan galeri…', 'Sedang mendapatkan semua gambar');
+
+            try {
+                // Fetch page 1 to know totalReports
+                const res1 = await fetch(`${GOOGLE_SCRIPT_URL}?action=getReports&page=1`);
+                const d1   = await res1.json();
+
+                if (!d1.success) throw new Error('API error');
+
+                mergeIntoGaleri(d1.reports);
+
+                const total      = d1.totalReports || d1.reports.length;
+                const totalPages = Math.ceil(total / 5);
+
+                // Fetch remaining pages in parallel
+                if (totalPages > 1) {
+                    const pagePromises = [];
+                    for (let p = 2; p <= totalPages; p++) {
+                        pagePromises.push(
+                            fetch(`${GOOGLE_SCRIPT_URL}?action=getReports&page=${p}`)
+                                .then(r => r.json())
+                        );
+                    }
+                    const results = await Promise.all(pagePromises);
+                    results.forEach(d => { if (d.success) mergeIntoGaleri(d.reports); });
+                }
+
+                galeriLoaded = true;
+                hideLoading();
+                renderGaleriGrid();
+
+            } catch (err) {
+                console.error('Galeri load error:', err);
+                hideLoading();
+                renderGaleriGrid(); // show whatever we have
+            }
+        }
+
+        /** Build / rebuild the visible tile grid from galeriFiltered */
+        function renderGaleriGrid(reset = true) {
+            const grid    = document.getElementById('galeriGrid');
+            const empty   = document.getElementById('galeriEmpty');
+            const moreBtn = document.getElementById('galeriLoadMore');
+
+            if (reset) {
+                grid.innerHTML       = '';
+                galeriRenderedCount  = 0;
+                galeriFiltered       = galeriAllReports.filter(r => galeriSearchPredicate(r, currentGaleriQuery));
+            }
+
+            document.getElementById('galeriTotal').textContent = galeriAllReports.length;
+
+            if (galeriFiltered.length === 0) {
+                empty.style.display = 'block';
+                moreBtn.style.display = 'none';
+                return;
+            }
+
+            empty.style.display = 'none';
+
+            const batch = galeriFiltered.slice(galeriRenderedCount, galeriRenderedCount + GALERI_PAGE_SIZE);
+            batch.forEach((report, batchIdx) => {
+                const globalIdx = galeriRenderedCount + batchIdx; // 0-indexed in galeriFiltered
+                const tile = buildGaleriTile(report, globalIdx, globalIdx === 0 && galeriRenderedCount === 0);
+                grid.appendChild(tile);
+            });
+
+            galeriRenderedCount += batch.length;
+
+            moreBtn.style.display = galeriRenderedCount < galeriFiltered.length ? 'block' : 'none';
+        }
+
+        function galeriLoadMore() {
+            renderGaleriGrid(false);
+        }
+
+        /** Build one tile DOM element */
+        function buildGaleriTile(report, index, isNewest) {
+            const tile = document.createElement('div');
+            tile.className = 'galeri-tile';
+            tile.style.animationDelay = `${(index % GALERI_PAGE_SIZE) * 35}ms`;
+            tile.dataset.galeriIndex  = index;
+
+            // Resolve image URL
+            let imgSrc = resolveImageUrl(report.gambar || '', 'w400');
+            const hasImage = !!report.gambar;
+
+            if (hasImage) {
+                tile.innerHTML = `
+                    ${isNewest ? '<div class="galeri-tile-new">✦ Terkini</div>' : ''}
+                    <div class="galeri-tile-zoom">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M21 21l-4.35-4.35m0 0A7 7 0 104.65 4.65a7 7 0 0011.99 11.99z"/>
+                        </svg>
+                    </div>
+                    <img src="${imgSrc}" alt="Gambar aktiviti ${report.tarikh}"
+                         loading="lazy"
+                         onerror="this.closest('.galeri-tile').querySelector('.galeri-tile-overlay').style.background='none'">
+                    <div class="galeri-tile-overlay">
+                        <div class="galeri-tile-date">📅 ${report.hari}, ${report.tarikh} &nbsp;·&nbsp; ${report.masa}</div>
+                        <div class="galeri-tile-caption">${report.butiran || ''}</div>
+                    </div>
+                `;
+            } else {
+                tile.innerHTML = `
+                    ${isNewest ? '<div class="galeri-tile-new">✦ Terkini</div>' : ''}
+                    <div class="galeri-tile-placeholder">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span>Tiada gambar</span>
+                    </div>
+                    <div class="galeri-tile-overlay" style="background:linear-gradient(to top,rgba(15,23,42,0.75),transparent)">
+                        <div class="galeri-tile-date">📅 ${report.hari}, ${report.tarikh} &nbsp;·&nbsp; ${report.masa}</div>
+                        <div class="galeri-tile-caption">${report.butiran || ''}</div>
+                    </div>
+                `;
+            }
+
+            tile.addEventListener('click', () => openLightbox(index));
+            return tile;
+        }
+
+        // ============================================
+        // GALERI SEARCH
+        // ============================================
+        let currentGaleriQuery = '';
+
+        function filterGaleri(query) {
+            currentGaleriQuery = query.trim().toLowerCase();
+            renderGaleriGrid(true);
+        }
+
+        function galeriSearchPredicate(report, query) {
+            if (!query) return true;
+            const haystack = [report.tarikh, report.hari, report.masa, report.butiran].join(' ').toLowerCase();
+            return haystack.includes(query);
+        }
+
+        // ============================================
+        // IMAGE URL HELPER
+        // ============================================
+        function resolveImageUrl(url, size = 'w400') {
+            if (!url) return '';
+            if (url.includes('drive.google.com')) {
+                let fileId = '';
+                if (url.includes('id='))        fileId = url.split('id=')[1].split('&')[0];
+                else if (url.includes('/file/d/')) fileId = url.split('/file/d/')[1].split('/')[0];
+                if (fileId) return `https://drive.google.com/thumbnail?id=${fileId}&sz=${size}`;
+            }
+            return url;
+        }
+
+        // ============================================
+        // LIGHTBOX
+        // ============================================
+        let lbCurrentIndex = 0;
+
+        function openLightbox(index) {
+            lbCurrentIndex = index;
+            const lb = document.getElementById('lightbox');
+            lb.classList.add('lb-active');
+            document.body.style.overflow = 'hidden';
+
+            buildLbStrip();
+            showLbSlide(index);
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('lb-active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeLightbox(direction) {
+            const newIdx = lbCurrentIndex + direction;
+            if (newIdx < 0 || newIdx >= galeriFiltered.length) return;
+            lbCurrentIndex = newIdx;
+            showLbSlide(lbCurrentIndex);
+        }
+
+        function showLbSlide(index) {
+            const report   = galeriFiltered[index];
+            if (!report) return;
+
+            const total    = galeriFiltered.length;
+            const img      = document.getElementById('lbImg');
+            const spinner  = document.getElementById('lbSpinner');
+            const counter  = document.getElementById('lbCounter');
+            const dateEl   = document.getElementById('lbDate');
+            const textEl   = document.getElementById('lbText');
+            const prevBtn  = document.querySelector('.lb-prev');
+            const nextBtn  = document.querySelector('.lb-next');
+
+            // Counter
+            counter.textContent = `${index + 1} / ${total}`;
+
+            // Arrows
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === total - 1;
+
+            // Caption
+            dateEl.textContent = `📅 ${report.hari}, ${report.tarikh}  ·  ${report.masa}`;
+            textEl.textContent  = report.butiran || '';
+
+            // Image
+            if (report.gambar) {
+                spinner.style.display = 'block';
+                img.style.display     = 'block';
+
+                // Animate out → in
+                img.style.animation = 'none';
+                img.offsetWidth;
+                img.style.animation = 'lbImgIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+
+                img.src = resolveImageUrl(report.gambar, 'w1200');
+            } else {
+                img.style.display     = 'none';
+                spinner.style.display = 'none';
+                // Show placeholder inside stage
+                let placeholder = document.querySelector('.lb-no-image');
+                if (!placeholder) {
+                    placeholder = document.createElement('div');
+                    placeholder.className = 'lb-no-image';
+                    placeholder.innerHTML = `
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span>Tiada gambar</span>
+                    `;
+                    document.querySelector('.lb-stage').appendChild(placeholder);
+                }
+                placeholder.style.display = 'flex';
+            }
+
+            // Sync strip
+            document.querySelectorAll('.lb-thumb').forEach((th, i) => {
+                th.classList.toggle('lb-thumb-active', i === index);
+            });
+
+            // Scroll active thumb into view
+            const activeThumb = document.querySelector('.lb-thumb-active');
+            if (activeThumb) activeThumb.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+        }
+
+        function lbImgError(img) {
+            img.style.display = 'none';
+            document.getElementById('lbSpinner').style.display = 'none';
+        }
+
+        /** Build the horizontal thumbnail strip */
+        function buildLbStrip() {
+            const strip = document.getElementById('lbStrip');
+            strip.innerHTML = '';
+
+            galeriFiltered.forEach((report, i) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'lb-thumb' + (i === lbCurrentIndex ? ' lb-thumb-active' : '');
+
+                if (report.gambar) {
+                    thumb.innerHTML = `<img src="${resolveImageUrl(report.gambar, 'w120')}" alt="thumb ${i+1}" loading="lazy">`;
+                } else {
+                    thumb.style.background = '#1e293b';
+                    thumb.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">📄</div>`;
+                }
+
+                thumb.addEventListener('click', () => {
+                    lbCurrentIndex = i;
+                    showLbSlide(i);
+                });
+                strip.appendChild(thumb);
+            });
+        }
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', e => {
+            const lb = document.getElementById('lightbox');
+            if (!lb.classList.contains('lb-active')) return;
+            if (e.key === 'ArrowLeft')  changeLightbox(-1);
+            if (e.key === 'ArrowRight') changeLightbox(1);
+            if (e.key === 'Escape')     closeLightbox();
+        });
+
+        // Click outside image to close
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
 
         // ============================================
         // GOOGLE SHEETS FUNCTIONS
@@ -1326,6 +2196,10 @@
         function displayReports(reports) {
             const reportsList = document.querySelector('.reports-list');
             reportsList.innerHTML = '';
+
+            // Cache into galeri store (dashboard data is always newest first per page)
+            mergeIntoGaleri(reports);
+
             reports.forEach((report, index) => {
                 const card = createReportCard(report, index === 0, index + 1 + (currentPage - 1) * 5);
                 reportsList.appendChild(card);
