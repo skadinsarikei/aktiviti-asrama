@@ -19,6 +19,8 @@
             --accent: #f59e0b;
             --success: #059669;
             --danger: #dc2626;
+            --like-color: #e11d48;
+            --like-bg: #fff1f2;
             --bg-main: #f8fafc;
             --bg-card: #ffffff;
             --text-primary: #1e293b;
@@ -48,14 +50,8 @@
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .header {
@@ -157,12 +153,8 @@
         }
 
         @keyframes slideIn {
-            from {
-                transform: scaleX(0);
-            }
-            to {
-                transform: scaleX(1);
-            }
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
         }
 
         .tab-content {
@@ -171,17 +163,11 @@
             animation: fadeIn 0.4s ease;
         }
 
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content.active { display: block; }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .dashboard-controls {
@@ -230,6 +216,9 @@
             opacity: 0.5;
         }
 
+        /* ============================================
+           REPORT CARD
+        ============================================ */
         .report-card {
             background: white;
             border: 1px solid var(--border);
@@ -241,6 +230,7 @@
             grid-template-columns: 200px 1fr 250px;
             gap: 1.5rem;
             align-items: start;
+            position: relative;
         }
 
         .report-card:hover {
@@ -281,9 +271,7 @@
             font-size: 0.95rem;
         }
 
-        .report-images {
-            display: block;
-        }
+        .report-images { display: block; }
 
         .report-image {
             width: 100%;
@@ -300,9 +288,170 @@
             object-fit: cover;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
+        /* ============================================
+           LIKE BUTTON SYSTEM
+        ============================================ */
+        .report-footer {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            margin-top: 0.5rem;
         }
+
+        .like-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .like-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.1rem;
+            border: 2px solid var(--border);
+            border-radius: 2rem;
+            background: white;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .like-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--like-bg);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .like-btn:hover::before { opacity: 1; }
+
+        .like-btn:hover {
+            border-color: var(--like-color);
+            color: var(--like-color);
+            transform: scale(1.05);
+        }
+
+        .like-btn.liked {
+            border-color: var(--like-color);
+            background: var(--like-bg);
+            color: var(--like-color);
+        }
+
+        .like-btn.liked .heart-icon {
+            animation: heartPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .heart-icon {
+            font-size: 1.1rem;
+            display: inline-block;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .like-btn:hover .heart-icon {
+            transform: scale(1.2);
+        }
+
+        .like-count {
+            font-size: 0.9rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .like-label {
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes heartPop {
+            0%   { transform: scale(1); }
+            30%  { transform: scale(1.5) rotate(-10deg); }
+            60%  { transform: scale(0.9) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        /* Floating hearts burst animation */
+        @keyframes floatUp {
+            0%   { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 1rem;
+            pointer-events: none;
+            animation: floatUp 0.8s ease-out forwards;
+            z-index: 999;
+        }
+
+        /* Like count bounce animation */
+        @keyframes countBounce {
+            0%   { transform: translateY(0); }
+            40%  { transform: translateY(-6px); }
+            70%  { transform: translateY(2px); }
+            100% { transform: translateY(0); }
+        }
+
+        .like-count.animating {
+            animation: countBounce 0.4s ease;
+        }
+
+        /* Liked-by avatars (mock) */
+        .liked-by {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .liked-by-avatars {
+            display: flex;
+        }
+
+        .avatar-bubble {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: white;
+            font-weight: 700;
+            margin-left: -6px;
+        }
+
+        .avatar-bubble:first-child { margin-left: 0; }
+
+        .avatar-bubble.pink   { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+        .avatar-bubble.blue   { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .avatar-bubble.green  { background: linear-gradient(135deg, #10b981, #047857); }
+        .avatar-bubble.amber  { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .avatar-bubble.purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+
+        /* ============================================
+           FORM STYLES
+        ============================================ */
+        .form-group { margin-bottom: 1.5rem; }
 
         .form-group label {
             display: block;
@@ -335,15 +484,7 @@
             resize: vertical;
         }
 
-        .image-upload-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-
-        .single-upload-container {
-            max-width: 500px;
-        }
+        .single-upload-container { max-width: 500px; }
 
         .upload-box-large {
             aspect-ratio: 16/9;
@@ -377,41 +518,6 @@
             font-weight: 600;
         }
 
-        .upload-box-large small {
-            display: block;
-        }
-
-        .upload-box {
-            aspect-ratio: 1;
-            border: 2px dashed var(--border);
-            border-radius: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: var(--bg-main);
-        }
-
-        .upload-box:hover {
-            border-color: var(--primary);
-            background: rgba(30, 64, 175, 0.05);
-        }
-
-        .upload-box svg {
-            width: 40px;
-            height: 40px;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .upload-box span {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
         .btn-submit {
             background: linear-gradient(135deg, var(--success) 0%, #047857 100%);
             color: white;
@@ -431,48 +537,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-secondary);
-        }
-
-        .empty-state svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                text-align: center;
-            }
-
-            .header-title h1 {
-                font-size: 1.2rem;
-            }
-
-            .report-card {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .tab {
-                padding: 0.75rem 1rem;
-                font-size: 0.9rem;
-            }
-
-            .dashboard-controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .nav-buttons {
-                justify-content: center;
-            }
-        }
-
         .badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -484,16 +548,16 @@
             margin-top: 0.5rem;
         }
 
-        /* Print Preview Modal */
+        /* ============================================
+           MODAL
+        ============================================ */
         .modal {
             display: none;
             position: fixed;
             z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
             animation: fadeIn 0.3s ease;
         }
 
@@ -537,8 +601,7 @@
             color: white;
             font-size: 1.5rem;
             cursor: pointer;
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -546,9 +609,7 @@
             transition: background 0.3s ease;
         }
 
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
+        .modal-close:hover { background: rgba(255,255,255,0.2); }
 
         .modal-body {
             padding: 2rem;
@@ -607,12 +668,6 @@
             padding: 1.5rem;
             font-family: 'IBM Plex Sans', sans-serif;
         }
-        
-        @media print {
-            .print-template {
-                padding: 0 !important;
-            }
-        }
 
         .print-header {
             display: flex;
@@ -623,16 +678,8 @@
             margin-bottom: 2rem;
         }
 
-        .print-logo {
-            width: 60px;
-            height: 60px;
-        }
-
-        .print-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
+        .print-logo { width: 60px; height: 60px; }
+        .print-logo img { width: 100%; height: 100%; object-fit: contain; }
 
         .print-title {
             flex: 1;
@@ -653,9 +700,7 @@
             color: var(--text-secondary);
         }
 
-        .print-section {
-            margin-bottom: 1.5rem;
-        }
+        .print-section { margin-bottom: 1.5rem; }
 
         .print-section-title {
             font-weight: 700;
@@ -673,14 +718,8 @@
             margin-bottom: 1rem;
         }
 
-        .print-label {
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .print-value {
-            color: var(--text-primary);
-        }
+        .print-label { font-weight: 600; color: var(--text-secondary); }
+        .print-value { color: var(--text-primary); }
 
         .print-image-container {
             margin: 1.5rem 0;
@@ -709,90 +748,15 @@
             transition: all 0.3s ease;
         }
 
-        .clickable-row:hover {
-            background: var(--bg-main);
-        }
-
-        @media print {
-            @page {
-                size: A4 portrait;
-                margin: 1.5cm;
-            }
-            
-            /* Hide everything first */
-            body > *:not(#printModal) {
-                display: none !important;
-            }
-            
-            /* Show only the modal */
-            #printModal {
-                display: block !important;
-                position: static !important;
-                background: white !important;
-            }
-            
-            /* Hide modal chrome (header, footer, overlay) */
-            .modal-header,
-            .modal-footer,
-            .modal-close {
-                display: none !important;
-            }
-            
-            /* Show modal content */
-            .modal-content {
-                width: 100% !important;
-                max-width: 100% !important;
-                max-height: none !important;
-                box-shadow: none !important;
-                border-radius: 0 !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            
-            .modal-body {
-                padding: 0 !important;
-                overflow: visible !important;
-            }
-            
-            /* Ensure print template is visible */
-            .print-template {
-                display: block !important;
-                visibility: visible !important;
-                position: static !important;
-                width: 100% !important;
-                padding: 1cm !important;
-            }
-            
-            .print-template * {
-                visibility: visible !important;
-            }
-            
-            /* Prevent page breaks in important sections */
-            .print-section {
-                page-break-inside: avoid;
-            }
-            
-            .print-header {
-                page-break-after: avoid;
-            }
-            
-            /* Ensure images print properly */
-            .print-image-container img {
-                max-width: 100% !important;
-                height: auto !important;
-                page-break-inside: avoid;
-            }
-        }
-
-        /* Loading Overlay */
+        /* ============================================
+           LOADING OVERLAY
+        ============================================ */
         .loading-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -800,13 +764,10 @@
             gap: 1rem;
         }
 
-        .loading-overlay.active {
-            display: flex;
-        }
+        .loading-overlay.active { display: flex; }
 
         .loading-spinner {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             border: 4px solid var(--border);
             border-top: 4px solid var(--primary);
             border-radius: 50%;
@@ -814,7 +775,7 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
+            0%   { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
@@ -828,6 +789,64 @@
         .loading-subtext {
             font-size: 0.9rem;
             color: var(--text-secondary);
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 768px) {
+            .header { text-align: center; }
+            .header-title h1 { font-size: 1.2rem; }
+            .report-card {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .tab { padding: 0.75rem 1rem; font-size: 0.9rem; }
+            .dashboard-controls { flex-direction: column; align-items: stretch; }
+            .nav-buttons { justify-content: center; }
+            .report-footer { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+        }
+
+        /* ============================================
+           PRINT STYLES
+        ============================================ */
+        @media print {
+            @page { size: A4 portrait; margin: 1.5cm; }
+
+            body > *:not(#printModal) { display: none !important; }
+
+            #printModal {
+                display: block !important;
+                position: static !important;
+                background: white !important;
+            }
+
+            .modal-header, .modal-footer, .modal-close { display: none !important; }
+
+            .modal-content {
+                width: 100% !important;
+                max-width: 100% !important;
+                max-height: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .modal-body { padding: 0 !important; overflow: visible !important; }
+
+            .print-template {
+                display: block !important;
+                visibility: visible !important;
+                position: static !important;
+                width: 100% !important;
+                padding: 1cm !important;
+            }
+
+            .print-template * { visibility: visible !important; }
+            .print-section { page-break-inside: avoid; }
+            .print-header { page-break-after: avoid; }
+            .print-image-container img { max-width: 100% !important; height: auto !important; page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -864,18 +883,12 @@
                     Menunjukkan <strong>1-5</strong> daripada <strong>23</strong> laporan
                 </div>
                 <div class="nav-buttons">
-                    <button class="nav-btn" disabled>
-                        ← Sebelum
-                    </button>
-                    <button class="nav-btn">
-                        Seterusnya →
-                    </button>
+                    <button class="nav-btn" disabled>← Sebelum</button>
+                    <button class="nav-btn">Seterusnya →</button>
                 </div>
             </div>
 
-            <div class="reports-list" style="display: none;">
-                <!-- Reports will be loaded here dynamically -->
-            </div>
+            <div class="reports-list" style="display: none;"></div>
         </div>
 
         <!-- Laporan Tab -->
@@ -894,10 +907,10 @@
                     </small>
                 </div>
 
-               <div class="form-group">
-    <label for="butiran">Butiran Aktiviti</label>
-    <textarea id="butiran" rows="12" style="width: 100%;" placeholder="Tuliskan butiran aktiviti SisKA atau aktiviti asrama di sini...Contohnya:&#10;&#10;Pelaporan perlu menyentuh perkembangan murid dalam empat aspek kritikal bagi memastikan kemenjadian murid asrama tercapai:&#10;&#10;Sahsiah dan Disiplin: Mengesan perubahan tingkah laku positif dan penerapan nilai kasih sayang.&#10;Akademik: Laporan bimbingan kelas kecil atau bantuan pembelajaran secara tidak formal di asrama.&#10;Sosial dan Kepimpinan: Bagaimana murid Tahun 6 memainkan peranan sebagai 'Abang atau Kakak' kepada murid yang lebih muda.&#10;Kerohanian dan Emosi: Aspek paling penting bagi murid luar bandar untuk memastikan keperluan emosi mereka dipenuhi agar mereka merasa selamat dan disayangi." required></textarea>
-</div>
+                <div class="form-group">
+                    <label for="butiran">Butiran Aktiviti</label>
+                    <textarea id="butiran" rows="12" style="width: 100%;" placeholder="Tuliskan butiran aktiviti SisKA atau aktiviti asrama di sini...Contohnya:&#10;&#10;Pelaporan perlu menyentuh perkembangan murid dalam empat aspek kritikal bagi memastikan kemenjadian murid asrama tercapai:&#10;&#10;Sahsiah dan Disiplin: Mengesan perubahan tingkah laku positif dan penerapan nilai kasih sayang.&#10;Akademik: Laporan bimbingan kelas kecil atau bantuan pembelajaran secara tidak formal di asrama.&#10;Sosial dan Kepimpinan: Bagaimana murid Tahun 6 memainkan peranan sebagai 'Abang atau Kakak' kepada murid yang lebih muda.&#10;Kerohanian dan Emosi: Aspek paling penting bagi murid luar bandar untuk memastikan keperluan emosi mereka dipenuhi agar mereka merasa selamat dan disayangi." required></textarea>
+                </div>
 
                 <div class="form-group">
                     <label>Gambar</label>
@@ -920,9 +933,7 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 2rem;">
-                    <button type="submit" class="btn-submit">
-                        💾 Simpan Laporan
-                    </button>
+                    <button type="submit" class="btn-submit">💾 Simpan Laporan</button>
                 </div>
             </form>
         </div>
@@ -943,15 +954,11 @@
                 <button class="modal-close" onclick="closePrintModal()">×</button>
             </div>
             <div class="modal-body">
-                <div class="print-template" id="printContent">
-                    <!-- Content will be dynamically inserted here -->
-                </div>
+                <div class="print-template" id="printContent"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closePrintModal()">Batal</button>
-                <button class="btn-print" onclick="printReport()">
-                    🖨️ Cetak
-                </button>
+                <button class="btn-print" onclick="printReport()">🖨️ Cetak</button>
             </div>
         </div>
     </div>
@@ -961,123 +968,233 @@
         // GOOGLE SHEETS CONFIGURATION
         // ============================================
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzapROky7x_XaMlZLG73OvPP1SbayNsSHvg2NkzGDl0Caue2cFAWr71bdx-KFSokEkJYA/exec';
-        
-        // Google Drive Folder ID untuk simpan gambar
         const DRIVE_FOLDER_ID = '1flKrpPwy1D1t48CnJKanL5U2JC5hYqKn';
-        
+
+        // ============================================
+        // LIKE SYSTEM — MOCK DATA & LOGIC
+        // ============================================
+
+        /**
+         * Mock avatar pool — cycles through available initials/colours
+         */
+        const AVATAR_POOL = [
+            { initial: 'A', cls: 'pink'   },
+            { initial: 'B', cls: 'blue'   },
+            { initial: 'N', cls: 'green'  },
+            { initial: 'S', cls: 'amber'  },
+            { initial: 'H', cls: 'purple' },
+            { initial: 'R', cls: 'pink'   },
+            { initial: 'Z', cls: 'blue'   },
+            { initial: 'F', cls: 'green'  },
+            { initial: 'M', cls: 'amber'  },
+            { initial: 'Y', cls: 'purple' },
+        ];
+
+        /**
+         * Compute mock like count for a report based on its position (1-indexed).
+         *
+         * Position 1 (newest)  → 1 like
+         * Position 2           → 1 + 2 = 3 likes
+         * Position 3           → 3 + 3 = 6 likes
+         * Position n           → n*(n+1)/2 likes  (triangular number)
+         *
+         * @param {number} position  1 = newest report
+         */
+        function getMockLikeCount(position) {
+            return (position * (position + 1)) / 2;
+        }
+
+        /**
+         * In-memory like state (persisted via window.storage when available).
+         * Key: uniqueId of report → { count, liked }
+         */
+        let likeState = {};
+
+        async function loadLikeState() {
+            try {
+                const result = await window.storage.get('siska-likes');
+                if (result && result.value) {
+                    likeState = JSON.parse(result.value);
+                }
+            } catch (_) {
+                // storage not available or key missing — start fresh
+                likeState = {};
+            }
+        }
+
+        async function saveLikeState() {
+            try {
+                await window.storage.set('siska-likes', JSON.stringify(likeState));
+            } catch (_) {
+                // silent — storage may not be available outside Claude.ai
+            }
+        }
+
+        /**
+         * Return current like count for a report.
+         * Falls back to mock count (based on position) if never interacted.
+         */
+        function getLikeCount(uniqueId, position) {
+            if (likeState[uniqueId] !== undefined) {
+                return likeState[uniqueId].count;
+            }
+            return getMockLikeCount(position);
+        }
+
+        function isLiked(uniqueId) {
+            return likeState[uniqueId] && likeState[uniqueId].liked;
+        }
+
+        /**
+         * Toggle like for a report.
+         * Returns the new like count.
+         */
+        async function toggleLike(uniqueId, position, countEl, btnEl) {
+            const currentCount = getLikeCount(uniqueId, position);
+            const currentlyLiked = isLiked(uniqueId);
+            const newLiked = !currentlyLiked;
+            const newCount = newLiked ? currentCount + 1 : Math.max(0, currentCount - 1);
+
+            // Persist state
+            likeState[uniqueId] = { count: newCount, liked: newLiked };
+            await saveLikeState();
+
+            // Update button appearance
+            if (newLiked) {
+                btnEl.classList.add('liked');
+                btnEl.querySelector('.heart-icon').textContent = '❤️';
+            } else {
+                btnEl.classList.remove('liked');
+                btnEl.querySelector('.heart-icon').textContent = '🤍';
+            }
+
+            // Animate count
+            countEl.textContent = formatLikeCount(newCount);
+            countEl.classList.remove('animating');
+            void countEl.offsetWidth; // reflow
+            countEl.classList.add('animating');
+            setTimeout(() => countEl.classList.remove('animating'), 400);
+
+            // Update label
+            const labelEl = btnEl.querySelector('.like-label');
+            labelEl.textContent = newCount === 1 ? 'suka' : 'suka';
+
+            // Spawn floating hearts if liking
+            if (newLiked) {
+                spawnFloatingHearts(btnEl);
+            }
+
+            // Update liked-by avatars
+            updateLikedByAvatars(uniqueId, position, newCount, btnEl.closest('.report-footer'));
+        }
+
+        function formatLikeCount(n) {
+            if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+            return n;
+        }
+
+        /** Spawn a burst of floating hearts near the like button */
+        function spawnFloatingHearts(btnEl) {
+            const rect = btnEl.getBoundingClientRect();
+            const count = 4 + Math.floor(Math.random() * 3); // 4–6 hearts
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('span');
+                    heart.className = 'floating-heart';
+                    heart.textContent = ['❤️','🩷','💕','💗'][Math.floor(Math.random() * 4)];
+                    heart.style.left = (rect.left + rect.width / 2 + (Math.random() - 0.5) * 60) + 'px';
+                    heart.style.top  = (rect.top  + window.scrollY - 10) + 'px';
+                    heart.style.animationDuration = (0.6 + Math.random() * 0.4) + 's';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 1000);
+                }, i * 80);
+            }
+        }
+
+        /** Render liked-by avatar stack + text */
+        function updateLikedByAvatars(uniqueId, position, count, footerEl) {
+            const likedByEl = footerEl.querySelector('.liked-by');
+            if (!likedByEl) return;
+
+            if (count === 0) {
+                likedByEl.innerHTML = '<span style="font-style:italic;">Belum ada yang suka lagi</span>';
+                return;
+            }
+
+            const showAvatars = Math.min(count, 5);
+            const avatarHtml = Array.from({ length: showAvatars }, (_, i) => {
+                const av = AVATAR_POOL[(position + i) % AVATAR_POOL.length];
+                return `<div class="avatar-bubble ${av.cls}">${av.initial}</div>`;
+            }).join('');
+
+            const othersCount = count - showAvatars;
+            const othersText = othersCount > 0
+                ? ` dan <strong>${othersCount}</strong> orang lain`
+                : '';
+
+            const firstName = AVATAR_POOL[position % AVATAR_POOL.length].initial;
+
+            likedByEl.innerHTML = `
+                <div class="liked-by-avatars">${avatarHtml}</div>
+                <span>${firstName}${othersText} menyukai ini</span>
+            `;
+        }
+
         // ============================================
         // TIME FORMATTING FUNCTIONS
         // ============================================
-        
-        /**
-         * Convert time format from 0500-0515 to 5.00 - 5.15 pagi/petang
-         */
         function formatTime(timeInput) {
-            // Remove all spaces and convert to uppercase
             timeInput = timeInput.replace(/\s+/g, '').toUpperCase();
-            
-            // Handle different separators: -, –, —, atau tiada separator
             let match = timeInput.match(/(\d{4})[-–—]?(\d{4})?/);
-            
-            if (!match) {
-                throw new Error('Format masa tidak sah. Guna format: 0500-0515 atau 1600-1700');
-            }
-            
+
+            if (!match) throw new Error('Format masa tidak sah. Guna format: 0500-0515 atau 1600-1700');
+
             const startTime = match[1];
-            const endTime = match[2] || '';
-            
-            // Parse start time
+            const endTime   = match[2] || '';
+
             const startHour = parseInt(startTime.substring(0, 2));
-            const startMin = startTime.substring(2, 4);
-            
-            if (startHour < 0 || startHour > 23 || parseInt(startMin) < 0 || parseInt(startMin) > 59) {
+            const startMin  = startTime.substring(2, 4);
+
+            if (startHour < 0 || startHour > 23 || parseInt(startMin) < 0 || parseInt(startMin) > 59)
                 throw new Error('Masa tidak sah. Pastikan jam (00-23) dan minit (00-59) betul.');
-            }
-            
-            // Determine period (pagi/petang/malam)
-            let period = '';
-            if (startHour >= 0 && startHour < 12) {
-                period = 'pagi';
-            } else if (startHour >= 12 && startHour < 18) {
-                period = 'petang';
-            } else {
-                period = 'malam';
-            }
-            
-            // Format start time (convert 24h to 12h format for display)
-            let displayStartHour = startHour;
-            if (startHour === 0) {
-                displayStartHour = 12;
-            } else if (startHour > 12) {
-                displayStartHour = startHour - 12;
-            }
-            
+
+            let period = startHour < 12 ? 'pagi' : startHour < 18 ? 'petang' : 'malam';
+
+            let displayStartHour = startHour === 0 ? 12 : startHour > 12 ? startHour - 12 : startHour;
             let formattedTime = `${displayStartHour}.${startMin}`;
-            
-            // If end time exists, format it too
+
             if (endTime) {
                 const endHour = parseInt(endTime.substring(0, 2));
-                const endMin = endTime.substring(2, 4);
-                
-                if (endHour < 0 || endHour > 23 || parseInt(endMin) < 0 || parseInt(endMin) > 59) {
+                const endMin  = endTime.substring(2, 4);
+
+                if (endHour < 0 || endHour > 23 || parseInt(endMin) < 0 || parseInt(endMin) > 59)
                     throw new Error('Masa tamat tidak sah. Pastikan jam (00-23) dan minit (00-59) betul.');
-                }
-                
-                let displayEndHour = endHour;
-                if (endHour === 0) {
-                    displayEndHour = 12;
-                } else if (endHour > 12) {
-                    displayEndHour = endHour - 12;
-                }
-                
+
+                let displayEndHour = endHour === 0 ? 12 : endHour > 12 ? endHour - 12 : endHour;
                 formattedTime += ` - ${displayEndHour}.${endMin}`;
             }
-            
-            formattedTime += ` ${period}`;
-            
-            return formattedTime;
+
+            return `${formattedTime} ${period}`;
         }
-        
-        /**
-         * Create unique ID from date and time
-         */
+
         function createUniqueId(dateStr, timeStr) {
-            // Parse date (YYYY-MM-DD)
-            const dateParts = dateStr.split('-');
-            const year = dateParts[0];
-            const month = dateParts[1];
-            const day = dateParts[2];
-            
-            // Parse time (get first 4 digits)
+            const [year, month, day] = dateStr.split('-');
             const timeMatch = timeStr.replace(/\s+/g, '').match(/(\d{4})/);
             const time = timeMatch ? timeMatch[1] : '0000';
-            
             return `${year}${month}${day}_${time}`;
         }
-        
+
         // ============================================
         // IMAGE PREVIEW FUNCTIONS
         // ============================================
         function previewImage(input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
-                
-                // Check file size (max 5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('Saiz gambar terlalu besar! Maksimum 5MB.');
-                    input.value = '';
-                    return;
-                }
-                
-                // Check file type
-                if (!file.type.match('image/(jpeg|jpg|png)')) {
-                    alert('Format gambar tidak sah! Gunakan JPG, JPEG atau PNG sahaja.');
-                    input.value = '';
-                    return;
-                }
-                
+                if (file.size > 5 * 1024 * 1024) { alert('Saiz gambar terlalu besar! Maksimum 5MB.'); input.value = ''; return; }
+                if (!file.type.match('image/(jpeg|jpg|png)')) { alert('Format gambar tidak sah! Gunakan JPG, JPEG atau PNG sahaja.'); input.value = ''; return; }
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = e => {
                     document.getElementById('previewImg').src = e.target.result;
                     document.getElementById('imagePreview').style.display = 'block';
                     document.getElementById('uploadBox').style.display = 'none';
@@ -1085,181 +1202,115 @@
                 reader.readAsDataURL(file);
             }
         }
-        
+
         function removeImage() {
             document.getElementById('fileInput').value = '';
             document.getElementById('imagePreview').style.display = 'none';
             document.getElementById('uploadBox').style.display = 'flex';
         }
-        
+
         // ============================================
         // LOADING OVERLAY FUNCTIONS
         // ============================================
-        
         function showLoading(message = 'Sedang memuat data...', subtext = 'Sila tunggu sebentar') {
             const overlay = document.getElementById('loadingOverlay');
-            const textElement = overlay.querySelector('.loading-text');
-            const subtextElement = overlay.querySelector('.loading-subtext');
-            
-            textElement.textContent = message;
-            subtextElement.textContent = subtext;
+            overlay.querySelector('.loading-text').textContent = message;
+            overlay.querySelector('.loading-subtext').textContent = subtext;
             overlay.classList.add('active');
         }
-        
+
         function hideLoading() {
-            const overlay = document.getElementById('loadingOverlay');
-            overlay.classList.remove('active');
+            document.getElementById('loadingOverlay').classList.remove('active');
         }
-        
+
+        // ============================================
         // PRINT PREVIEW FUNCTIONS
         // ============================================
-        
         function openPrintModal(report) {
             const modal = document.getElementById('printModal');
             const printContent = document.getElementById('printContent');
-            
-            // Fix image URL if it's from Google Drive
+
             let imageUrl = report.gambar || '';
             if (imageUrl && imageUrl.includes('drive.google.com')) {
                 let fileId = '';
-                if (imageUrl.includes('id=')) {
-                    fileId = imageUrl.split('id=')[1].split('&')[0];
-                } else if (imageUrl.includes('/file/d/')) {
-                    fileId = imageUrl.split('/file/d/')[1].split('/')[0];
-                }
-                if (fileId) {
-                    imageUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
-                }
+                if (imageUrl.includes('id=')) fileId = imageUrl.split('id=')[1].split('&')[0];
+                else if (imageUrl.includes('/file/d/')) fileId = imageUrl.split('/file/d/')[1].split('/')[0];
+                if (fileId) imageUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
             }
-            
-            // Generate print template
+
             printContent.innerHTML = `
                 <div class="print-header">
-                    <div class="print-logo">
-                        <img src="https://i.postimg.cc/G23tcFnW/Logo-SK-Adin.png" alt="Logo SK Adin">
-                    </div>
+                    <div class="print-logo"><img src="https://i.postimg.cc/G23tcFnW/Logo-SK-Adin.png" alt="Logo SK Adin"></div>
                     <div class="print-title">
                         <h1>LAPORAN SisKA & AKTIVITI ASRAMA</h1>
                         <p>Sekolah Kebangsaan Adin, Sarikei (YBB6102)</p>
                     </div>
-                    <div class="print-logo">
-                        <img src="https://i.postimg.cc/Njd1dGKk/Ts25-Program-Transformasi-Sekolah-2025-Logo-Vector-svg.png" alt="TS25 Logo">
-                    </div>
+                    <div class="print-logo"><img src="https://i.postimg.cc/Njd1dGKk/Ts25-Program-Transformasi-Sekolah-2025-Logo-Vector-svg.png" alt="TS25 Logo"></div>
                 </div>
-
                 <div class="print-section">
                     <div class="print-section-title">Maklumat Laporan</div>
                     <div class="print-info-grid">
-                        <div class="print-label">Tarikh:</div>
-                        <div class="print-value">${report.tarikh}</div>
-                        
-                        <div class="print-label">Hari:</div>
-                        <div class="print-value">${report.hari}</div>
-                        
-                        <div class="print-label">Masa:</div>
-                        <div class="print-value">${report.masa}</div>
+                        <div class="print-label">Tarikh:</div><div class="print-value">${report.tarikh}</div>
+                        <div class="print-label">Hari:</div><div class="print-value">${report.hari}</div>
+                        <div class="print-label">Masa:</div><div class="print-value">${report.masa}</div>
                     </div>
                 </div>
-
                 <div class="print-section">
                     <div class="print-section-title">Butiran Aktiviti</div>
-                    <div class="print-value" style="line-height: 1.8;">
-                        ${report.butiran}
-                    </div>
+                    <div class="print-value" style="line-height:1.8;">${report.butiran}</div>
                 </div>
-
                 ${imageUrl ? `
-                    <div class="print-section">
-                        <div class="print-section-title">Gambar Aktiviti</div>
-                        <div class="print-image-container">
-                            <img src="${imageUrl}" alt="Gambar Aktiviti" onerror="this.style.display='none'">
-                        </div>
+                <div class="print-section">
+                    <div class="print-section-title">Gambar Aktiviti</div>
+                    <div class="print-image-container">
+                        <img src="${imageUrl}" alt="Gambar Aktiviti" onerror="this.style.display='none'">
                     </div>
-                ` : ''}
-
-                <div class="print-footer">
-                    Ini adalah janaan digital. Tandatangan tidak diperlukan.
-                </div>
+                </div>` : ''}
+                <div class="print-footer">Ini adalah janaan digital. Tandatangan tidak diperlukan.</div>
             `;
-            
+
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-        
+
         function closePrintModal() {
-            const modal = document.getElementById('printModal');
-            modal.classList.remove('active');
+            document.getElementById('printModal').classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-        
+
         function printReport() {
-            // Ensure modal is fully visible and rendered
-            const modal = document.getElementById('printModal');
             const printContent = document.getElementById('printContent');
-            
-            // Check if content exists
-            if (!printContent.innerHTML.trim()) {
-                alert('Ralat: Tiada kandungan untuk dicetak.');
-                return;
-            }
-            
-            // Small delay to ensure images are loaded
-            setTimeout(() => {
-                // Trigger print dialog
-                window.print();
-            }, 250);
+            if (!printContent.innerHTML.trim()) { alert('Ralat: Tiada kandungan untuk dicetak.'); return; }
+            setTimeout(() => window.print(), 250);
         }
-        
-        // Close modal when clicking outside
+
         document.getElementById('printModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePrintModal();
-            }
+            if (e.target === this) closePrintModal();
         });
-        
-        // Close modal on ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const modal = document.getElementById('printModal');
-                if (modal.classList.contains('active')) {
-                    closePrintModal();
-                }
-            }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && document.getElementById('printModal').classList.contains('active')) closePrintModal();
         });
-        
-        
+
         // ============================================
         // TAB SWITCHING
         // ============================================
         function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
-            
-            // Load data when switching to dashboard
-            if (tabName === 'dashboard') {
-                loadReportsFromSheet();
-            }
+            if (tabName === 'dashboard') loadReportsFromSheet();
         }
 
         // ============================================
         // GOOGLE SHEETS FUNCTIONS
         // ============================================
-        
-        // Load reports from Google Sheets
         async function loadReportsFromSheet() {
             showLoading();
             try {
                 const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getReports&page=${currentPage}`);
                 const data = await response.json();
-                
                 if (data.success) {
                     hideLoading();
                     displayReports(data.reports);
@@ -1269,52 +1320,57 @@
             } catch (error) {
                 console.error('Error loading reports:', error);
                 hideLoading();
-                // Silently fail for now, will show mock data
             }
         }
 
-        // Display reports in dashboard
         function displayReports(reports) {
             const reportsList = document.querySelector('.reports-list');
             reportsList.innerHTML = '';
-            
             reports.forEach((report, index) => {
-                const reportCard = createReportCard(report, index === 0);
-                reportsList.appendChild(reportCard);
+                const card = createReportCard(report, index === 0, index + 1 + (currentPage - 1) * 5);
+                reportsList.appendChild(card);
             });
         }
 
-        // Create report card HTML element
-        function createReportCard(report, isLatest) {
+        /**
+         * Create report card with like button.
+         * @param {object} report
+         * @param {boolean} isLatest
+         * @param {number} globalPosition  1-indexed position across all pages (newest = 1)
+         */
+        function createReportCard(report, isLatest, globalPosition) {
             const card = document.createElement('div');
             card.className = 'report-card clickable-row';
-            
-            // Fix Google Drive URL for direct image display
+
             let imageUrl = report.gambar || '';
             if (imageUrl && imageUrl.includes('drive.google.com')) {
-                // Extract file ID from various Google Drive URL formats
                 let fileId = '';
-                
-                // Format 1: https://drive.google.com/uc?export=view&id=FILE_ID
-                if (imageUrl.includes('id=')) {
-                    fileId = imageUrl.split('id=')[1].split('&')[0];
-                }
-                // Format 2: https://drive.google.com/file/d/FILE_ID/
-                else if (imageUrl.includes('/file/d/')) {
-                    fileId = imageUrl.split('/file/d/')[1].split('/')[0];
-                }
-                
-                // Use thumbnail format for better loading
-                if (fileId) {
-                    imageUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
-                }
+                if (imageUrl.includes('id=')) fileId = imageUrl.split('id=')[1].split('&')[0];
+                else if (imageUrl.includes('/file/d/')) fileId = imageUrl.split('/file/d/')[1].split('/')[0];
+                if (fileId) imageUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
             }
-            
-            // Fallback to placeholder if no image
-            if (!imageUrl) {
-                imageUrl = 'https://via.placeholder.com/400x300?text=Tiada+Gambar';
-            }
-            
+            if (!imageUrl) imageUrl = 'https://via.placeholder.com/400x300?text=Tiada+Gambar';
+
+            const uid = report.uniqueId || `report_${globalPosition}`;
+            const count = getLikeCount(uid, globalPosition);
+            const liked = isLiked(uid);
+
+            // Build liked-by preview (use mock avatars based on position)
+            const avatarCount = Math.min(count, 5);
+            const avatarHtml = count > 0
+                ? Array.from({ length: avatarCount }, (_, i) => {
+                    const av = AVATAR_POOL[(globalPosition + i) % AVATAR_POOL.length];
+                    return `<div class="avatar-bubble ${av.cls}">${av.initial}</div>`;
+                }).join('')
+                : '';
+
+            const othersCount = count - avatarCount;
+            const firstName = count > 0 ? AVATAR_POOL[globalPosition % AVATAR_POOL.length].initial : '';
+            const likedByText = count === 0
+                ? '<span style="font-style:italic;color:var(--text-secondary);">Belum ada yang suka lagi</span>'
+                : `<div class="liked-by-avatars">${avatarHtml}</div>
+                   <span>${firstName}${othersCount > 0 ? ` dan <strong>${othersCount}</strong> orang lain` : ''} menyukai ini</span>`;
+
             card.innerHTML = `
                 <div class="report-date">
                     <div class="date-day">${report.tarikh}</div>
@@ -1328,34 +1384,54 @@
                 </div>
                 <div class="report-images">
                     <div class="report-image">
-                        <img src="${imageUrl}" alt="Aktiviti" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=Gambar+Tidak+Tersedia';">
+                        <img src="${imageUrl}" alt="Aktiviti"
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=Gambar+Tidak+Tersedia';">
+                    </div>
+                </div>
+
+                <!-- LIKE FOOTER -->
+                <div class="report-footer">
+                    <div class="liked-by">${likedByText}</div>
+
+                    <div class="like-section">
+                        <button class="like-btn ${liked ? 'liked' : ''}"
+                                data-uid="${uid}"
+                                data-pos="${globalPosition}"
+                                title="${liked ? 'Buang suka' : 'Suka laporan ini'}">
+                            <span class="heart-icon">${liked ? '❤️' : '🤍'}</span>
+                            <span class="like-count">${formatLikeCount(count)}</span>
+                            <span class="like-label">suka</span>
+                        </button>
                     </div>
                 </div>
             `;
-            
-            // Add click event to open print preview
-            card.addEventListener('click', function() {
-                openPrintModal(report);
+
+            // Click on card body → open print modal (but NOT on like button)
+            card.addEventListener('click', function(e) {
+                if (!e.target.closest('.like-btn') && !e.target.closest('.report-footer')) {
+                    openPrintModal(report);
+                }
             });
-            
+
+            // Like button handler — stop propagation so it doesn't open print modal
+            const likeBtn = card.querySelector('.like-btn');
+            likeBtn.addEventListener('click', async function(e) {
+                e.stopPropagation();
+                const countEl = this.querySelector('.like-count');
+                await toggleLike(uid, globalPosition, countEl, this);
+            });
+
             return card;
         }
 
-        // Save report to Google Sheets
         async function saveReportToSheet(reportData) {
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'saveReport',
-                        data: reportData
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'saveReport', data: reportData })
                 });
-                
                 return { success: true };
             } catch (error) {
                 console.error('Error saving report:', error);
@@ -1363,7 +1439,6 @@
             }
         }
 
-        // Convert image to base64
         function convertImageToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -1378,76 +1453,43 @@
         // ============================================
         document.getElementById('reportForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
             const submitBtn = this.querySelector('.btn-submit');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '⏳ Menyimpan...';
-                showLoading('Menyimpan laporan...', 'Mohon tunggu, data sedang diproses');
+            showLoading('Menyimpan laporan...', 'Mohon tunggu, data sedang diproses');
             submitBtn.disabled = true;
-            
+
             try {
-                // Get form data
-                const dateInput = document.getElementById('tarikh').value; // YYYY-MM-DD
+                const dateInput = document.getElementById('tarikh').value;
                 const timeInput = document.getElementById('masa').value;
-                
-                // Format time
+
                 let formattedTime;
-                try {
-                    formattedTime = formatTime(timeInput);
-                } catch (error) {
-                    throw new Error(error.message);
-                }
-                
-                // Parse date
+                try { formattedTime = formatTime(timeInput); }
+                catch (err) { throw new Error(err.message); }
+
                 const date = new Date(dateInput);
-                
-                // Format date as '2.02.2025' with apostrophe
                 const tarikh = `'${date.getDate()}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
-                
-                // Get day name in Malay
-                const days = ['Ahad', 'Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu'];
+                const days = ['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
                 const hari = days[date.getDay()];
-                
-                // Create UniqueID from date and time
                 const uniqueId = createUniqueId(dateInput, timeInput);
-                
                 const butiran = document.getElementById('butiran').value;
-                
-                // Get image file and convert to base64
+
                 const fileInput = document.getElementById('fileInput');
                 let imageBase64 = '';
-                
-                if (fileInput.files.length > 0) {
-                    imageBase64 = await convertImageToBase64(fileInput.files[0]);
-                }
-                
-                // Prepare report data
-                const reportData = {
-                    uniqueId: uniqueId,
-                    tarikh: tarikh,
-                    hari: hari,
-                    masa: formattedTime,
-                    butiran: butiran,
-                    gambar: imageBase64,
-                    folderId: DRIVE_FOLDER_ID,
-                    timestamp: new Date().toISOString()
-                };
-                
-                // Save to Google Sheets
+                if (fileInput.files.length > 0) imageBase64 = await convertImageToBase64(fileInput.files[0]);
+
+                const reportData = { uniqueId, tarikh, hari, masa: formattedTime, butiran, gambar: imageBase64, folderId: DRIVE_FOLDER_ID, timestamp: new Date().toISOString() };
                 const result = await saveReportToSheet(reportData);
-                
+
                 if (result.success) {
                     alert('✅ Laporan berjaya disimpan!');
                     this.reset();
                     removeImage();
-                    
-                    // Switch to dashboard and reload
                     document.querySelector('.tab:first-child').click();
                     setTimeout(() => loadReportsFromSheet(), 500);
                 } else {
                     throw new Error(result.error || 'Gagal menyimpan laporan');
                 }
-                
             } catch (error) {
                 console.error('Error:', error);
                 alert('❌ Ralat: ' + error.message);
@@ -1466,15 +1508,8 @@
 
         document.querySelectorAll('.nav-btn').forEach((btn, index) => {
             btn.addEventListener('click', function() {
-                if (index === 0) { // Previous button
-                    if (currentPage > 1) {
-                        currentPage--;
-                        loadReportsFromSheet();
-                    }
-                } else { // Next button
-                    currentPage++;
-                    loadReportsFromSheet();
-                }
+                if (index === 0) { if (currentPage > 1) { currentPage--; loadReportsFromSheet(); } }
+                else { currentPage++; loadReportsFromSheet(); }
             });
         });
 
@@ -1483,12 +1518,11 @@
             const start = (currentPage - 1) * 5 + 1;
             const end = Math.min(currentPage * 5, totalReports);
             const totalPages = Math.ceil(totalReports / 5);
-            
-            document.querySelector('.page-info').innerHTML = `Menunjukkan <strong>${start}-${end}</strong> daripada <strong>${totalReports}</strong> laporan`;
-            
-            const prevBtn = document.querySelectorAll('.nav-btn')[0];
-            const nextBtn = document.querySelectorAll('.nav-btn')[1];
-            
+
+            document.querySelector('.page-info').innerHTML =
+                `Menunjukkan <strong>${start}-${end}</strong> daripada <strong>${totalReports}</strong> laporan`;
+
+            const [prevBtn, nextBtn] = document.querySelectorAll('.nav-btn');
             prevBtn.disabled = currentPage === 1;
             nextBtn.disabled = currentPage === totalPages;
         }
@@ -1496,10 +1530,9 @@
         // ============================================
         // INITIALIZATION
         // ============================================
-        // Load reports on page load
-        window.addEventListener('load', function() {
+        window.addEventListener('load', async function() {
+            await loadLikeState();
             loadReportsFromSheet();
-            
             console.log('Sistem Laporan Aktiviti Asrama dimulakan.');
         });
     </script>
