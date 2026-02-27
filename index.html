@@ -869,170 +869,22 @@
         }
 
         /* ============================================
-           GALERI PRINT AREA — hidden normally
-        ============================================ */
-        #galeriPrintArea {
-            display: none; /* Only shown @media print when body.print-galeri */
-        }
-
-        /* ---- Papan Info Print Template ---- */
-        .gpa-page {
-            width: 100%;
-            font-family: 'IBM Plex Sans', sans-serif;
-            background: white;
-            color: #1e293b;
-        }
-
-        /* Top header bar */
-        .gpa-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding-bottom: 0.9rem;
-            border-bottom: 4px solid #1e40af;
-            margin-bottom: 1.4rem;
-        }
-
-        .gpa-logo {
-            width: 56px;
-            height: 56px;
-            flex-shrink: 0;
-        }
-
-        .gpa-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .gpa-school-info {
-            flex: 1;
-        }
-
-        .gpa-school-name {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: #1e40af;
-            line-height: 1.2;
-        }
-
-        .gpa-school-sub {
-            font-size: 0.78rem;
-            color: #64748b;
-            margin-top: 0.15rem;
-        }
-
-        .gpa-section-badge {
-            background: #1e40af;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            padding: 0.35rem 0.85rem;
-            border-radius: 0.375rem;
-            flex-shrink: 0;
-        }
-
-        /* Main image block */
-        .gpa-image-wrap {
-            width: 100%;
-            border-radius: 0.6rem;
-            overflow: hidden;
-            border: 2px solid #e2e8f0;
-            margin-bottom: 1rem;
-            background: #f8fafc;
-            text-align: center;
-        }
-
-        .gpa-image-wrap img {
-            width: 100%;
-            max-height: 420px;
-            object-fit: contain;
-            display: block;
-        }
-
-        /* Caption card */
-        .gpa-caption-card {
-            border: 1.5px solid #e2e8f0;
-            border-left: 5px solid #1e40af;
-            border-radius: 0 0.5rem 0.5rem 0;
-            padding: 0.85rem 1.1rem;
-            background: #f8fafc;
-            margin-bottom: 1rem;
-        }
-
-        .gpa-caption-meta {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 0.5rem;
-        }
-
-        .gpa-meta-pill {
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: #1e40af;
-            background: rgba(30,64,175,0.07);
-            padding: 0.25rem 0.65rem;
-            border-radius: 2rem;
-        }
-
-        .gpa-meta-pill svg {
-            width: 13px;
-            height: 13px;
-            flex-shrink: 0;
-        }
-
-        .gpa-caption-text {
-            font-size: 0.93rem;
-            line-height: 1.65;
-            color: #334155;
-        }
-
-        /* Footer */
-        .gpa-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 0.7rem;
-            border-top: 1px solid #e2e8f0;
-            font-size: 0.72rem;
-            color: #94a3b8;
-            font-style: italic;
-        }
-
-        .gpa-ts25-logo {
-            height: 32px;
-            opacity: 0.7;
-        }
-
-        /* ============================================
-           PRINT MEDIA QUERIES
+           PRINT MEDIA QUERIES  (laporan modal only)
         ============================================ */
         @media print {
-            @page { size: A4 portrait; margin: 1.2cm; }
+            @page { size: A4 portrait; margin: 1.5cm; }
 
-            /* === MODE 1 : Laporan report print (existing) === */
-            body:not(.print-galeri) > *:not(#printModal) { display: none !important; }
+            body > *:not(#printModal) { display: none !important; }
 
-            body:not(.print-galeri) #printModal {
+            #printModal {
                 display: block !important;
                 position: static !important;
                 background: white !important;
             }
 
-            body:not(.print-galeri) .modal-header,
-            body:not(.print-galeri) .modal-footer,
-            body:not(.print-galeri) .modal-close { display: none !important; }
+            .modal-header, .modal-footer, .modal-close { display: none !important; }
 
-            body:not(.print-galeri) .modal-content {
+            .modal-content {
                 width: 100% !important;
                 max-width: 100% !important;
                 max-height: none !important;
@@ -1042,9 +894,9 @@
                 padding: 0 !important;
             }
 
-            body:not(.print-galeri) .modal-body { padding: 0 !important; overflow: visible !important; }
+            .modal-body { padding: 0 !important; overflow: visible !important; }
 
-            body:not(.print-galeri) .print-template {
+            .print-template {
                 display: block !important;
                 visibility: visible !important;
                 position: static !important;
@@ -1052,30 +904,12 @@
                 padding: 1cm !important;
             }
 
-            body:not(.print-galeri) .print-template * { visibility: visible !important; }
+            .print-template * { visibility: visible !important; }
             .print-section { page-break-inside: avoid; }
             .print-header { page-break-after: avoid; }
-            body:not(.print-galeri) .print-image-container img {
+            .print-image-container img {
                 max-width: 100% !important;
                 height: auto !important;
-                page-break-inside: avoid;
-            }
-
-            /* === MODE 2 : Galeri papan-info print === */
-            body.print-galeri > *:not(#galeriPrintArea) { display: none !important; }
-
-            body.print-galeri #galeriPrintArea {
-                display: block !important;
-                position: static !important;
-                background: white !important;
-            }
-
-            body.print-galeri .gpa-page { display: block !important; }
-            body.print-galeri .gpa-page * { visibility: visible !important; }
-
-            body.print-galeri .gpa-image-wrap img {
-                max-height: 400px !important;
-                object-fit: contain !important;
                 page-break-inside: avoid;
             }
         }
@@ -2378,93 +2212,184 @@
         }
 
         // ============================================
-        // GALERI — PRINT PAPAN INFO
+        // GALERI — CETAK PAPAN INFO (new-window)
         // ============================================
         function printGaleriSlide() {
-            const report = galeriFiltered[lbCurrentIndex];
-            if (!report) return;
+            // Fallback: use galeriAllReports if galeriFiltered is empty
+            const source = (galeriFiltered && galeriFiltered.length > 0)
+                ? galeriFiltered
+                : galeriAllReports;
 
-            // Resolve high-res image URL
-            const imgSrc = report.gambar ? resolveImageUrl(report.gambar, 'w1200') : '';
-
-            // Build the print template HTML
-            const printArea = document.getElementById('galeriPrintArea');
-            printArea.innerHTML = `
-                <div class="gpa-page">
-
-                    <!-- Header -->
-                    <div class="gpa-header">
-                        <div class="gpa-logo">
-                            <img src="https://i.postimg.cc/G23tcFnW/Logo-SK-Adin.png" alt="Logo SK Adin">
-                        </div>
-                        <div class="gpa-school-info">
-                            <div class="gpa-school-name">Sekolah Kebangsaan Adin, Sarikei</div>
-                            <div class="gpa-school-sub">YBB6102 &nbsp;·&nbsp; Laporan SisKA &amp; Aktiviti Asrama</div>
-                        </div>
-                        <div class="gpa-section-badge">Papan Maklumat</div>
-                    </div>
-
-                    <!-- Image -->
-                    <div class="gpa-image-wrap">
-                        ${imgSrc
-                            ? `<img src="${imgSrc}" alt="Gambar aktiviti" onerror="this.style.display='none'">`
-                            : `<div style="padding:3rem;color:#94a3b8;font-family:'Poppins',sans-serif;font-size:1rem;">Tiada gambar untuk laporan ini</div>`
-                        }
-                    </div>
-
-                    <!-- Caption card -->
-                    <div class="gpa-caption-card">
-                        <div class="gpa-caption-meta">
-                            <span class="gpa-meta-pill">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                ${report.hari}, ${report.tarikh}
-                            </span>
-                            <span class="gpa-meta-pill">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                ${report.masa}
-                            </span>
-                        </div>
-                        <div class="gpa-caption-text">${report.butiran || ''}</div>
-                    </div>
-
-                    <!-- Footer -->
-                    <div class="gpa-footer">
-                        <span>Dicetak: ${new Date().toLocaleDateString('ms-MY', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}</span>
-                        <img class="gpa-ts25-logo"
-                             src="https://i.postimg.cc/Njd1dGKk/Ts25-Program-Transformasi-Sekolah-2025-Logo-Vector-svg.png"
-                             alt="TS25">
-                    </div>
-
-                </div>
-            `;
-
-            // Switch print mode → galeri
-            document.body.classList.add('print-galeri');
-
-            // Wait for image to settle before printing
-            const printImg = printArea.querySelector('img.gpa-image-wrap img, .gpa-image-wrap img');
-            const doPrint = () => {
-                setTimeout(() => {
-                    window.print();
-                    // Restore after dialog dismissed
-                    setTimeout(() => document.body.classList.remove('print-galeri'), 500);
-                }, 300);
-            };
-
-            if (imgSrc) {
-                const tempImg = new Image();
-                tempImg.onload  = doPrint;
-                tempImg.onerror = doPrint;
-                tempImg.src = imgSrc;
-            } else {
-                doPrint();
+            const report = source[lbCurrentIndex];
+            if (!report) {
+                alert('Tiada data laporan untuk dicetak.');
+                return;
             }
+
+            const imgSrc     = report.gambar ? resolveImageUrl(report.gambar, 'w1200') : '';
+            const tarikhHari = `${report.hari || ''}, ${report.tarikh || ''}`;
+            const masa       = report.masa || '';
+            const butiran    = (report.butiran || '')
+                                .replace(/&/g,'&amp;')
+                                .replace(/</g,'&lt;')
+                                .replace(/>/g,'&gt;')
+                                .replace(/\n/g,'<br>');
+
+            const imgBlock = imgSrc
+                ? `<div class="img-wrap"><img id="mainImg" src="${imgSrc}" alt="Gambar Aktiviti"></div>`
+                : `<div class="img-wrap no-img-wrap"><p>Tiada gambar untuk laporan ini</p></div>`;
+
+            const html = `<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cetak Aktiviti Asrama</title>
+<style>
+@page { size: A4 portrait; margin: 1.2cm 1.4cm; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: Arial, sans-serif; background:#fff; color:#1e293b; }
+
+.img-wrap {
+  width: 100%;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f8fafc;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.img-wrap img {
+  width: 100%;
+  max-height: 200mm;
+  object-fit: contain;
+  display: block;
+}
+.no-img-wrap {
+  padding: 40px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.caption-card {
+  border: 1.5px solid #e2e8f0;
+  border-left: 5px solid #1e40af;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  background: #f8fafc;
+}
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(30,64,175,0.09);
+  color: #1e40af;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-family: Arial, sans-serif;
+}
+.caption-text {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #334155;
+}
+
+/* Print: hide button, show content */
+.print-btn-bar {
+  text-align: center;
+  padding: 16px 0 12px;
+}
+.print-btn-bar button {
+  padding: 10px 28px;
+  background: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+}
+.print-btn-bar button:hover { background: #1e3a8a; }
+.status-msg {
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+  padding-bottom: 8px;
+  font-family: Arial, sans-serif;
+}
+@media print {
+  .print-btn-bar, .status-msg { display: none !important; }
+  body { background: white; }
+}
+</style>
+</head>
+<body>
+
+<div class="status-msg" id="statusMsg">⏳ Sedang memuatkan gambar...</div>
+
+<div class="print-btn-bar">
+  <button onclick="window.print()">🖨️ Cetak Sekarang</button>
+</div>
+
+${imgBlock}
+
+<div class="caption-card">
+  <div class="meta-row">
+    <span class="pill">📅 ${tarikhHari}</span>
+    <span class="pill">🕐 ${masa}</span>
+  </div>
+  <div class="caption-text">${butiran}</div>
+</div>
+
+<script>
+(function() {
+  var statusEl = document.getElementById('statusMsg');
+  var img = document.getElementById('mainImg');
+
+  function ready() {
+    statusEl.textContent = '✅ Gambar dimuatkan. Sedia untuk dicetak.';
+    setTimeout(function() { statusEl.style.display = 'none'; }, 2000);
+  }
+
+  if (!img) {
+    statusEl.textContent = 'Tiada gambar. Klik butang untuk cetak.';
+    return;
+  }
+  if (img.complete && img.naturalWidth > 0) {
+    ready();
+  } else {
+    img.addEventListener('load', ready);
+    img.addEventListener('error', function() {
+      statusEl.textContent = '⚠️ Gambar gagal dimuatkan. Cuba cetak walau bagaimanapun.';
+    });
+  }
+})();
+<\/script>
+</body>
+</html>`;
+
+            // Build Blob URL — never blocked by popup blockers
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+            const url  = URL.createObjectURL(blob);
+            const tab  = window.open(url, '_blank');
+
+            if (!tab) {
+                // Final fallback: use data URI
+                const dataUri = 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
+                window.location.href = dataUri;
+            }
+
+            // Clean up blob URL after tab opens
+            setTimeout(() => URL.revokeObjectURL(url), 10000);
         }
 
         /** Build the horizontal thumbnail strip */
